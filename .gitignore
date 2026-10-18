@@ -1,0 +1,36 @@
+# Generated reports and local experiments
+/.local/
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+
+# Local authentication and deployment state
+.env
+.env.*
+!.env.example
+.netlify/
+.openai/
+.aws/
+*.pem
+*.key
+
+# Local packages and private project material, never public skill inputs
+/*.zip
+/*.tar
+/*.tar.gz
+/网站及发布更新/
+/随机日期照片/
+/拼贴照片/
+/趣味问答/
+/信封展开特效/
+/birthday-site/
+/backups/
+/private-materials/
+
+# Keep examples/minimal-site/dist tracked: it is an intentional fixture.

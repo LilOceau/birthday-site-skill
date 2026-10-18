@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <title>Fictional example card A</title>
+  <rect width="600" height="800" fill="#c7d9e2"/>
+  <circle cx="300" cy="270" r="130" fill="#f7f5ef"/>
+  <rect x="120" y="460" width="360" height="180" rx="12" fill="#627f91"/>
+</svg>
