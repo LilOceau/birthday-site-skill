@@ -1,0 +1,4 @@
+interface:
+  display_name: "生日网站构建与维护"
+  short_description: "维护生日网站的媒体导入、互动体验、验证发布与可恢复文件清理"
+  default_prompt: "使用 $birthday-site-workflow 维护当前生日网站，保留原素材和已有交互，并验证本次修改。"
