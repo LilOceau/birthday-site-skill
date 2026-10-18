@@ -1,0 +1,10 @@
+{
+  "id": "birthday-demo",
+  "recipient": "小夏",
+  "title": "A day for you",
+  "year": 2026,
+  "description": "一封生日来信，和那些值得收藏的日子。",
+  "letterLine": "Another beautiful year",
+  "letterDescription": "a little collection of days worth keeping.",
+  "welcomeDate": "06/15"
+}

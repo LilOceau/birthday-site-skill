@@ -1,15 +1,17 @@
 ---
 name: birthday-site-workflow
-description: 维护现有生日静态网站，完成日期照片与原画 Live 导入、编号拼贴、图片问答、开场动画、验证、发布和可恢复清理。适用于包含 import-materials.py 与 dist/content.js 的生日网站项目。
+description: 从附带完整模板创建生日静态网站，或维护现有生日网站。支持信封开场、日期相册、Live、拼贴、图片问答、增量导入、验证发布和可恢复清理。
 ---
 
 # 生日网站构建与维护
 
-本 skill 维护已有工程。完整网站、媒体导入器和浏览器验证脚本由目标工程提供；缺少它们时先报告实际缺口，不将仓库最小示例中的识别标记当成可执行导入器。
+新建工程时阅读 [references/build-project.md](references/build-project.md)，运行 `scripts/create_project.py <新目录>`。完整模板、虚构素材、导入器与测试都在 `assets/project/`，安装整个 skill 后即可使用，无需原站目录、额外插件或账号。
+
+维护已有工程时先识别其版本。含 `site.json`、`content.json`、`build.py` 的附带模板按 build-project.md 操作；旧项目按以下流程核查，不用模板覆盖现有工程。仓库 examples/minimal-site 仍是只读检查器的小型演示，不是新建入口。
 
 ## 定位与当前事实
 
-从用户工作区运行 `rg --files -g import-materials.py` 定位项目，阅读当前代码、配置与 Git 状态。此项目没有前端编译步骤：**dist 是手工维护的源码与可发布网站，不能当作可再生缓存删除**。不要执行 clean/reset 覆盖尚未提交的修改。
+从用户工作区运行 `rg --files -g import-materials.py` 定位项目，阅读当前代码、配置与 Git 状态。**dist 含手工维护的源码与发布媒体，不能当作可再生缓存删除**。新模板仅生成其中 index.html/content.js，旧项目可能直接维护这两个文件。不要执行 clean/reset 覆盖尚未提交的修改。
 
 先运行本 skill 的只读检查：
 
@@ -28,7 +30,7 @@ python <skill目录>/scripts/inspect_site.py --site <生日网站目录> --outpu
 ## 持续保留的行为
 
 - 保留日期分组与数字顺序、白框叠放相册、逐日解锁、间接日历提示和已有拼贴/问答。原素材及其名称不变。
-- 当前 Live 是保留 H.264 视频流的静音 MP4；README 的早期 WebP 章节是历史说明。保持静帧先显示、playing 后切视频、ended 后回静帧，暂停/失败/后台时仍可看照片。
+- Live 是保留 H.264 视频流的静音 MP4；若旧工程 README 提到 WebP，先核对实际代码。保持静帧先显示、playing 后切视频、ended 后回静帧，暂停/失败/后台时仍可看照片。
 - 翻页等待下载与解码时保留当前画面；仅在新画面提交时同时更新编号、说明、选中项与进度；废弃过期异步结果。
 - 原图仅在用户打开对应图片时加载。后台队列只准备预览、缩略图和 Live，前台优先，最多两个任务；隐藏、离线、省流量时暂停，不能额外解锁日期。
 - 拼贴保留数字排序、左右按钮、键盘、触摸滑动和放大查看；问答保留用户文字、A–D 顺序及零起始答案索引，缺少答案时不猜测。

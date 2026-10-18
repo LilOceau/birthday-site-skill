@@ -1,5 +1,7 @@
 # 验证与发布
 
+本页中的 validate*.cjs 命令属于已有旧版工程。附带模板使用 `python build.py --check`、`python -m unittest discover -s tests -v`、`npm run test:browser` 和 `python serve.py`，详见 [build-project.md](build-project.md)。
+
 ## 本地验证
 
 在生日网站目录运行 `node --check` 检查实际改动的 JS，然后运行：

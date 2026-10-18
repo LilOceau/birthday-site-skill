@@ -1,0 +1,31 @@
+name: Validate portable starter
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  starter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: python birthday-site-workflow/scripts/create_project.py /tmp/birthday-demo
+      - run: python -m pip install -r requirements.txt
+        working-directory: /tmp/birthday-demo
+      - run: python build.py --check
+        working-directory: /tmp/birthday-demo
+      - run: python -m unittest discover -s tests -v
+        working-directory: /tmp/birthday-demo
+      - run: npm ci
+        working-directory: /tmp/birthday-demo
+      - run: npx playwright install --with-deps chromium
+        working-directory: /tmp/birthday-demo
+      - run: npm run test:browser
+        working-directory: /tmp/birthday-demo
+      - run: python birthday-site-workflow/scripts/inspect_site.py --site /tmp/birthday-demo

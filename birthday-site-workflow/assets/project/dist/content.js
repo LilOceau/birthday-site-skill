@@ -1,0 +1,133 @@
+/* Generated from content.json and site.json by build.py. */
+window.BIRTHDAY_CONTENT = {
+  "memories": [
+    {
+      "date": "06/15",
+      "title": "海边来信",
+      "photos": [
+        {
+          "src": "assets/imported/f36398dad9fdbc2989a1335d/preview.webp",
+          "thumb": "assets/imported/f36398dad9fdbc2989a1335d/thumb.webp",
+          "original": "assets/imported/f36398dad9fdbc2989a1335d/original.png",
+          "type": "image",
+          "caption": "示例插画 · 01"
+        },
+        {
+          "src": "assets/imported/eee5fdb38a03ae6f267051c9/preview.webp",
+          "thumb": "assets/imported/eee5fdb38a03ae6f267051c9/thumb.webp",
+          "original": "assets/imported/eee5fdb38a03ae6f267051c9/original.png",
+          "type": "image",
+          "caption": "示例插画 · 02"
+        },
+        {
+          "src": "assets/imported/003ef64c6c3100a3500f2abf/motion.live.mp4",
+          "thumb": "assets/imported/003ef64c6c3100a3500f2abf/thumb.webp",
+          "poster": "assets/imported/003ef64c6c3100a3500f2abf/preview.webp",
+          "type": "live",
+          "original": "assets/imported/003ef64c6c3100a3500f2abf/still-full.webp",
+          "caption": "示例插画 · 03"
+        }
+      ]
+    },
+    {
+      "date": "08/22",
+      "title": "夏日记忆",
+      "photos": [
+        {
+          "src": "assets/imported/266043ffd275572ffbab5352/preview.webp",
+          "thumb": "assets/imported/266043ffd275572ffbab5352/thumb.webp",
+          "original": "assets/imported/266043ffd275572ffbab5352/original.png",
+          "type": "image",
+          "caption": "示例插画 · 01"
+        },
+        {
+          "src": "assets/imported/d504862d1e55fbada3e87619/video.mp4",
+          "thumb": "assets/imported/d504862d1e55fbada3e87619/thumb.webp",
+          "poster": "assets/imported/d504862d1e55fbada3e87619/preview.webp",
+          "type": "video",
+          "caption": "示例插画 · 02"
+        }
+      ]
+    }
+  ],
+  "collage": [
+    {
+      "src": "assets/imported/88135c4fc9f8087d546bbae9/original.png",
+      "preview": "assets/imported/88135c4fc9f8087d546bbae9/preview.webp",
+      "thumb": "assets/imported/88135c4fc9f8087d546bbae9/thumb.webp",
+      "width": 900,
+      "height": 1200,
+      "caption": "示例拼贴 01"
+    },
+    {
+      "src": "assets/imported/6ef23aa62027d82e75d9a319/original.png",
+      "preview": "assets/imported/6ef23aa62027d82e75d9a319/preview.webp",
+      "thumb": "assets/imported/6ef23aa62027d82e75d9a319/thumb.webp",
+      "width": 900,
+      "height": 1200,
+      "caption": "示例拼贴 02"
+    }
+  ],
+  "quiz": [
+    {
+      "question": "示例相册的迎宾日期是哪一天？",
+      "options": [
+        "06/15",
+        "08/22",
+        "01/01",
+        "12/31"
+      ],
+      "answer": 0,
+      "explanation": "这是虚构示例。可以在 site.json 中修改迎宾日期。"
+    },
+    {
+      "question": "选择第一张青蓝色海边插画。",
+      "options": [
+        {
+          "label": "海边",
+          "src": "assets/demo/choice-1.png",
+          "preview": "assets/demo/choice-1.png"
+        },
+        {
+          "label": "山间",
+          "src": "assets/demo/choice-2.png",
+          "preview": "assets/demo/choice-2.png"
+        },
+        {
+          "label": "傍晚",
+          "src": "assets/demo/choice-3.png",
+          "preview": "assets/demo/choice-3.png"
+        },
+        {
+          "label": "晴天",
+          "src": "assets/demo/choice-4.png",
+          "preview": "assets/demo/choice-4.png"
+        }
+      ],
+      "answer": 0,
+      "explanation": "选项图片可以单独放大查看。",
+      "explanationImages": [
+        {
+          "src": "assets/demo/choice-1.png",
+          "alt": "示例海边插画"
+        }
+      ]
+    },
+    {
+      "question": "下一个生日，最想去哪里？",
+      "options": [
+        "海边",
+        "森林",
+        "山间",
+        "由你决定"
+      ],
+      "answer": null,
+      "explanation": "这是开放题，答案未设置，不计入总分。"
+    }
+  ],
+  "siteId": "birthday-demo",
+  "recipient": "小夏",
+  "hintYear": 2026,
+  "welcomeDate": "06/15",
+  "mediaVersion": "9afbf5315445f6ca"
+};

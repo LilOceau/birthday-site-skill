@@ -1,124 +1,119 @@
-# Birthday Site Workflow
+# Birthday Site Skill
 
-一个用于 Codex 的生日静态网站维护 skill，整理日期相册、原画 Live、编号拼贴、图片问答、验证发布和可恢复清理的工作流程。
+从零创建可运行的生日网站，也可维护已有生日网站。这个 Codex skill 内置完整静态工程、虚构示例素材、增量导入器、验证脚本和部署说明；**无需访问作者的私人项目即可独立使用**。
 
-**首版定位：维护已有工程。** 本仓库提供 AI 操作说明、只读资产检查脚本和虚构的最小示例。完整网站、媒体导入器、交互实现和浏览器回归脚本仍由目标工程提供；目前不支持仅安装此 skill 就从零生成同款网站。
+信封开场 → 日期解锁相册 → Live 与视频 → 编号拼贴 → 图片问答。保留灰蓝信笺风格、手机适配、原图按需加载和浏览器进度。
 
-## 包含什么
+## 五分钟开始
+
+先安装 Python 3.11+。在 PowerShell、macOS 或 Linux 终端运行：
 
 ```text
-README.md
-LICENSE
-.gitignore
-birthday-site-workflow/
-  SKILL.md
-  agents/openai.yaml
-  references/
-    content-workflow.md
-    validation-release.md
-    retention.md
-  scripts/inspect_site.py
-examples/minimal-site/
-  README.md
-  import-materials.py       # 仅作工程识别标记，拒绝执行真实导入
-  import-options.json
-  dist/
-    index.html
-    content.js
-    assets/card-a.svg
-    assets/card-b.svg
+git clone https://github.com/LilOceau/birthday-site-skill.git
+cd birthday-site-skill
+python birthday-site-workflow/scripts/create_project.py ../my-birthday-site --recipient 小夏 --title "A day for you"
+cd ../my-birthday-site
+python serve.py
 ```
 
-- **媒体流程**：沿用目标工程导入器，保留源文件、日期分组、数字顺序和 Live 原画视频流。
-- **交互约束**：保持日期解锁、拼贴翻页、问答顺序、原图按需加载和浏览进度。
-- **验证与发布**：选择目标工程已有检查，按明确授权发布并核对线上资源。
-- **可恢复清理**：先盘点、备份和比对，再清理经过确认的缓存或重复副本。
-- **只读检查器**：统计内容、检查静态文件引用、输出发布文件 SHA256；不会导入媒体、清理文件或发布网站。
+打开 **http://127.0.0.1:8765**。点击信封和“走进这一年”；迎宾相册是 **06/15**，另一个日期是 **08/22**。Ctrl+C 停止预览。目标目录必须不存在，初始化器不会覆盖已有内容。
 
-## 安装到 Codex
+预览不需要安装 pip/npm 包，也不需要账号、API key 或插件。下载仓库 ZIP 后也能运行同一初始化命令，无需 Git。新工程的 [README](birthday-site-workflow/assets/project/README.md) 包含完整的配置、媒体导入、测试、恢复和发布步骤。
 
-在 Codex 中使用内置安装技能：
+## 作为 Codex skill 使用
+
+将 `birthday-site-workflow/` **整个目录**复制到 `$CODEX_HOME/skills/`（默认 `~/.codex/skills/`），或让 skill-installer 安装：
 
 ```text
 $skill-installer 安装 https://github.com/LilOceau/birthday-site-skill/tree/main/birthday-site-workflow 中的 skill。
 ```
 
-仓库为私有时，需要当前账号拥有读取权限；公开后可直接下载。安装后在下一轮对话中调用 `$birthday-site-workflow`。如果已有同名 skill，先检查原版本与本地修改，再执行更新。
-
-也可以克隆仓库，将 **`birthday-site-workflow/` 整个目录**复制到 `$CODEX_HOME/skills/`；未设置 `CODEX_HOME` 时使用 `~/.codex/skills/`。README 与 examples 用于阅读和体验，使用安装器仅安装 skill 子目录时不会一并复制它们。
-
-## 快速体验
-
-以下命令在仓库根目录执行，适用于 PowerShell 或常见终端：
+重新加载技能后调用：
 
 ```text
-git clone https://github.com/LilOceau/birthday-site-skill.git
-cd birthday-site-skill
-python birthday-site-workflow/scripts/inspect_site.py --site examples/minimal-site
+$birthday-site-workflow 在新目录创建一个生日网站，收件人为小夏，先用示例素材给我预览。
 ```
 
-预期统计：**1 个日期、2 张静态图片、0 段 Live、0 个普通视频、1 张拼贴、1 道问答**；缺失引用和越界引用均为空。示例只使用本仓库编写的 SVG 几何图形，不含人物照片、真实问答或部署账号。
+安装器只需安装 skill 子目录，完整工程已包含在里面。有旧版本时先保留本地修改，再更新整个目录。已有私人站点继续走维护流程，不要用模板覆盖旧工程。
 
-需要保存详细哈希报告时：
+## 版本 0.2.0 包含什么
 
-```text
-python birthday-site-workflow/scripts/inspect_site.py --site examples/minimal-site --output .local/minimal-inspection.json
-```
-
-报告必须在被检查工程之外；若输出文件已存在，请选用新文件名。详细步骤与预期结果见 [最小示例说明](examples/minimal-site/README.md)。
-
-## 环境依赖
-
-| 操作 | 所需环境 |
+| 能力 | 实现与入口 |
 | --- | --- |
-| 让 Codex 阅读和执行流程 | 支持本地 skills 的 Codex 环境，以及目标工程文件访问权限 |
-| 运行附带检查器与最小示例 | Python 3.11+、可在 PATH 中调用的 Node.js；检查器使用 Python/Node 标准库，无需 pip/npm 安装包 |
-| 执行真实媒体导入 | 目标工程的导入脚本、原始素材，以及脚本使用的 FFmpeg / `imageio_ffmpeg` |
-| 执行浏览器回归 | 目标工程的 `validate*.cjs`、Playwright 及匹配的浏览器运行时 |
-| 发布网站 | 目标工程配置；选择 Netlify 时需要其 CLI 和授权，选择 Sites 时需要可用的相应工具与授权 |
+| 创建独立工程 | scripts/create_project.py；新目录保护、独立浏览进度 ID |
+| 内容配置 | site.json / content.json；build.py 检查日期、引用、答案并生成网页内容 |
+| 完整前端 | 信封动画、日期相册、Live/普通视频、缩放、拼贴翻页与总览、图片问答 |
+| 媒体导入 | 按日期增量导入、编号校验、原件哈希、H.264 视频流保留、备份与清单 |
+| 本地预览 | Python 标准库服务，支持视频 Range 请求 |
+| 导出部署 | 只导出 dist、Netlify 静态站配置、明确选择部署目标 |
+| 验证 | Python 集成测试、Playwright 桌面/手机尺寸/存储受限测试、GitHub Actions |
+| 旧站维护 | 原有只读检查器与内容/清理/回滚工作流程仍保留 |
 
-本次示例验证环境为 Windows PowerShell、Python 3.13、Node.js 24；其他环境请先运行上面的只读示例。基础流程无需额外 MCP 服务或插件清单。Sites 是可选发布路径，不是安装本 skill 的前置条件。
+默认演示含 **2 个日期、5 个媒体（其中 1 段 Live、1 个普通视频）、2 张拼贴、3 道问答**。全部图片为原创几何插画，短片为程序生成，无人物照片、私人问答、原站部署地址或第三方字体。
 
-## 接入自己的工程
+## 替换自己的内容
 
-skill 会查找 `import-materials.py` 与 `dist/content.js`。请先让 Codex 阅读工程，再判断是否兼容；同名文件并不证明实现相同。
-
-| 约定 | 目标工程需要提供的内容 |
-| --- | --- |
-| `dist/` | 手工维护的网页源码和发布资源；不能直接视为可删除的构建缓存 |
-| `dist/content.js` | 定义 `window.BIRTHDAY_CONTENT`，含 `memories`、`collage`、`quiz` |
-| 日期相册 | `memories[].photos[]` 中的 `src`、`thumb`、`type`，按需使用 `poster` / `original` |
-| 拼贴 | `collage[]` 中的原图、预览、缩略图及编号顺序 |
-| 问答 | `quiz[]` 中的题目、四个选项、0–3 的答案索引；未确定答案可为 null |
-| 导入配置 | `import-options.json` 中的 `live_dates` 与 `sequence_overrides` |
-| 导入与回归 | 工程自己的 `import-materials.py`、`import-collages.py`、`prepare-*.py` 和相关 `validate*.cjs` |
-
-完整流程还涉及 `app.js`、`viewer.js`、`opening.js`、`live-cache.js` 等工程实现。目录名称、媒体分类与验证命令应按实际项目适配。缺少某项脚本时，先说明缺口；不要把示例识别标记当成可用导入器。
-
-调用示例：
+进入初始化后的工程，编辑 site.json 的姓名、标题、年份和迎宾日期，编辑 content.json 的相册标题与问答，然后运行：
 
 ```text
-$birthday-site-workflow 检查当前生日网站的媒体引用和构建依赖，报告缺失项。
-
-$birthday-site-workflow 将指定日期文件夹增量导入现有工程，保留其他相册、拼贴和问答，完成本地验证。
-
-$birthday-site-workflow 盘点当前工程的缓存、历史发布包和中间目录，先列出可验证的保留与清理依据。
+python build.py
 ```
 
-## 检查范围与限制
+需要导入自己的照片时安装 requirements.txt，把素材按 `materials/photos/MM.DD/` 和 `materials/collages/` 放好，再执行：
 
-检查器覆盖内容对象中的常见资源字段，以及 HTML/CSS 中的静态链接；不会发现所有动态拼接 URL，不验证图片解码、视频流、浏览器交互或线上部署。退出码 0 表示这些检查未发现问题，1 表示缺失或越界引用；参数错误及执行错误也会返回非零值。
+```text
+python -m pip install -r requirements.txt
+python import-materials.py --date 06.15
+python import-collages.py
+python build.py --check
+```
 
-`content.js` 会由 Node.js 执行以读取内容对象。仅对可信的本地工程运行；`node:vm` 不应被当作执行不可信 JavaScript 的安全边界。
+建议使用虚拟环境，激活方法与格式约定见 [工程说明](birthday-site-workflow/assets/project/README.md)。导入器不改动原始输入，旧输出和必要备份不会自动删除。照片导入仅替换指定日期的媒体列表，拼贴与问答保持不变。
 
-流程说明中的媒体导入、清理和发布会影响文件或外部服务，须按实际用户任务范围执行；只读检查通过不代表已获发布或删除授权。浏览器 localStorage 中的个人进度不属于构建缓存。
+**dist 中既有源码，也有生成文件和媒体，不能整目录清理。** 仅 index.html/content.js 由构建生成；改动这两项应修改上游模板和 JSON。
 
-## 发布范围与后续方向
+## 环境与验证
 
-首版提供维护流程与检查示例。后续构建版计划补充去除个人内容的网站模板、可复用导入器与独立验证流程；这些能力尚未包含在本版本中。
+| 操作 | 依赖 |
+| --- | --- |
+| 初始化、改文案、构建、预览、导出 | Python 3.11+ 标准库 |
+| 图片与视频导入、Python 集成测试 | requirements.txt 中的 Pillow、imageio-ffmpeg |
+| 浏览器回归 | Node.js 22+、锁定版本的 Playwright 和浏览器 |
+| 只读 inspect_site.py | Python 3.11+、Node.js；只用于受信任的本地工程 |
+| 上线 | 自选静态托管；账号、站点和授权由使用者提供 |
 
-当前仓库不分发个人照片、真实视频、原站问答内容、部署标识或凭据。`.gitignore` 用于减少误提交，提交前仍应检查实际文件清单。
+在新工程目录验证和导出：
 
-## 许可证
+```text
+python build.py --check
+python -m unittest discover -s tests -v
+npm ci
+npx playwright install chromium
+npm run test:browser
+python export.py release/birthday-site.zip
+```
 
-仓库内的说明、检查脚本和虚构示例采用 [MIT License](LICENSE)。接入项目自有代码、素材和第三方工具的授权由对应项目另行提供。
+浏览器测试覆盖开场、相册、缩放、Live/视频呈现、拼贴、图片问答和进度恢复；手机尺寸模拟不能替代真实 Safari/iPhone 验收。仓库提供 [CI 流程](.github/workflows/validate.yml)，在干净 Linux 环境初始化后执行同样的检查。
+
+inspect_site.py 会读取并执行本地 content.js（Node vm 不是安全沙箱），不要用于不受信任的 JS。旧的 [minimal-site](examples/minimal-site/README.md) 仅用于演示该检查器；完整构建使用本页初始化器。
+
+## 发布与素材边界
+
+完整工程使用相对资源路径，可部署到支持静态文件的服务；Netlify 配置已附带，具体步骤见工程 README。无需安装专门插件，不会自动创建或覆盖线上站点。
+
+**日期解锁是互动效果，不是访问控制。** 公开部署后，内容和媒体都能被访问。用真实素材建站时，请自己决定访问范围；导出包包含 dist 中保留的旧媒体，不能把打包过程当成隐私过滤。仓库公开与网站上线是两个独立操作。
+
+## 目录与许可
+
+```text
+birthday-site-workflow/
+  SKILL.md
+  agents/openai.yaml
+  scripts/                  # 初始化器、只读检查器
+  references/               # 新建与旧站维护的分支流程
+  assets/project/           # 完整可复制工程、示例素材与测试
+examples/minimal-site/       # 保留的检查器小示例
+.github/workflows/validate.yml
+```
+
+代码和自制演示素材使用 [MIT License](LICENSE)，模板也附带同一许可证。第三方依赖遵循各自许可证；用户自己的图片、音乐和字体不因使用本仓库而自动获得授权。

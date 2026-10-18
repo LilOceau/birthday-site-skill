@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+node_modules/
+.work/
+.backups/
+.local/
+manifests/
+.netlify/
+.env
+.env.*
+!.env.example
+materials/
+release/
+# dist and editable config are necessary to reproduce/deploy your site.
+# Before publishing your own repository, review them for personal media/content.

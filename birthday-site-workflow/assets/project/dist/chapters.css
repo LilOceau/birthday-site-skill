@@ -1,0 +1,160 @@
+/* Seaside stationery: CSS-only paper surfaces, one reused opening motif.
+   Scoped to chapters so opening and immersive viewer retain their own layouts.
+   No new bitmap, font, animation loop, filter or fixed background layer. */
+#chapters {
+  --sheet: #f4f3ef;
+  --cloth: #cbd6dc;
+  --paper-grain: repeating-linear-gradient(0deg, #315f6904 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, #315f6903 0 1px, transparent 1px 5px);
+  background: #e7eeed;
+}
+#chapters .chapter-nav {
+  height: 76px;
+  background: #f4f3effa;
+  border-bottom: 1px solid #315f6926;
+  box-shadow: 0 3px 18px #315f6907;
+}
+#chapters .section-wrap { max-width: 1280px; padding: 104px 7%; }
+#chapters h2 { font-size: clamp(32px, 3.3vw, 48px); letter-spacing: .025em; line-height: 1.45; }
+#chapters .handwritten { color: #527c81; }
+#chapters .quiz-explanation { margin-top: 20px; padding-top: 20px; border-top: 1px solid #315f6926; }
+#chapters .quiz-explanation h4 { margin: 0 0 12px; font-size: 16px; font-weight: 500; letter-spacing: .08em; }
+#chapters .quiz-explanation p { margin: 0; font-size: 15px; line-height: 1.9; overflow-wrap: anywhere; }
+#chapters .quiz-explanation-images { display: grid; gap: 12px; }
+#chapters .quiz-explanation-image { display: block; width: 100%; min-width: 0; margin-top: 16px; padding: 10px; border: 1px solid #315f6926; background: #f4f3ef; }
+#chapters .quiz-explanation-image img { display: block; width: 100%; height: auto; max-height: 380px; object-fit: contain; }
+#chapters .quiz-explanation-image span { display: block; margin-top: 8px; font-size: 12px; color: #527c81; text-align: center; }
+#chapters .primary-button { box-shadow: inset 0 1px #ffffff18, 0 3px 0 #204851; }
+
+/* A calendar sheet, with the letter's offset composition and blue-grey backing. */
+#chapters .dates-section { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 52px 72px; align-items: center; }
+#chapters .dates-intro { position: relative; padding: 6px 0 112px; min-width: 0; }
+#chapters .dates-intro::after {
+  content: ""; position: absolute; width: 105px; height: 96px; bottom: 0; left: 0;
+  background: url('assets/demo/botanical.svg') center / contain no-repeat;
+  opacity: .72; pointer-events: none;
+}
+#chapters .dates-intro h2 { text-shadow: 0 1px #ffffffb3; }
+#chapters .dates-intro .draft-note { max-width: 320px; }
+#chapters .album-count { margin-top: 30px; gap: 14px; }
+#chapters .album-count strong { font-size: 58px; }
+#chapters .date-game {
+  position: relative; isolation: isolate; min-width: 0; padding: 50px 32px 24px;
+  background-image: var(--paper-grain), linear-gradient(130deg, #ffffff75, #ffffff00 65%);
+  background-color: var(--sheet);
+  border: 1px solid #ffffffb3;
+  box-shadow: 8px 10px 0 -1px var(--cloth), 9px 11px 0 #afc1c8, 0 18px 34px -22px #315f6966;
+}
+#chapters .date-game::before {
+  content: ""; position: absolute; top: 18px; left: 25px; right: 25px; height: 3px;
+  border-top: 1px solid #809da44d; border-bottom: 1px solid #ffffffc4; pointer-events: none;
+}
+#chapters .date-slot { background: #e6eceb; border-bottom-color: #a6bdc1; }
+#chapters .date-slot.active { background: #fffefa; border-bottom-color: var(--ink); }
+#chapters .number-pool { min-height: 158px; margin: 25px 0; }
+#chapters .date-controls { flex-wrap: wrap; gap: 4px 22px; margin-bottom: 20px; }
+#chapters .date-controls .text-button { min-height: 40px; }
+#chapters .date-game .message { margin-top: 20px; }
+#chapters .unlocked-albums { padding-top: 22px; border-top: 1px solid #a6bdc14d; }
+
+/* The artwork has its own wide exhibition space and a horizontal title. */
+#chapters .collage-section {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: 36px; border-top: 1px solid #afc1c870;
+  background-image: linear-gradient(180deg, #cbd6dc66, #e7eeed00 75%);
+}
+#chapters .collage-title {
+  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  column-gap: 60px; align-items: start; align-self: auto;
+}
+#chapters .collage-title .handwritten { grid-column: 1 / -1; margin-bottom: 18px; }
+#chapters .collage-title h2 { grid-column: 1; grid-row: 2 / 4; margin: 0; }
+#chapters .collage-title h2 br { display: none; }
+#chapters .collage-title > p { grid-column: 2; margin: 3px 0 0; }
+#chapters .collage-title > p br { display: none; }
+#chapters .collage-title .draft-note { margin-top: 12px; max-width: none; }
+#chapters .collage-board {
+  justify-self: center; width: 100%; padding: 26px 24px 16px;
+  background-color: var(--sheet); background-image: var(--paper-grain);
+  border: 1px solid #ffffffba; box-shadow: 0 14px 32px -25px #315f696b;
+}
+#chapters .collage-cover { margin-inline: auto; background: #fffef9; box-shadow: 0 4px 16px #315f6914; }
+#chapters .collage-controls { max-width: 640px; margin: 20px auto 0; }
+#chapters .collage-controls button { background: #e9efed; border-color: #bdcecf; }
+#chapters .collage-overview-wrap { grid-column: 1; }
+#chapters .collage-overview-bar { border-top: 0; padding-top: 0; gap: 12px; }
+#chapters .collage-grid { padding-top: 8px; }
+#chapters .collage-thumbnail { background: var(--sheet); }
+
+/* A note drawn from the envelope: the question card leads on desktop. */
+#chapters .quiz-section {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr);
+  grid-template-areas: "paper intro"; gap: 76px; align-items: center;
+  border-top: 1px solid #afc1c870; padding-top: 112px; padding-bottom: 124px;
+}
+#chapters .quiz-intro { grid-area: intro; min-width: 0; }
+#chapters .quiz-intro .handwritten { max-width: 310px; }
+#chapters .quiz-intro h2 { margin-bottom: 22px; }
+#chapters .quiz-paper {
+  grid-area: paper; position: relative; isolation: isolate; min-width: 0;
+  min-height: 405px; padding: 42px 34px 36px;
+  background-color: var(--sheet); background-image: var(--paper-grain);
+  border: 1px solid #ffffffc4;
+  box-shadow: -12px 14px 0 -1px #cbd6dc, -13px 15px 0 #afc1c8, 0 18px 34px -25px #315f695c;
+}
+#chapters .quiz-meta { padding-bottom: 16px; border-bottom: 1px solid #b9cccd80; margin-bottom: 27px; }
+#chapters .quiz-paper h3 { line-height: 1.65; }
+#chapters .quiz-option { background: #ffffff38; }
+#chapters .quiz-option.correct { background: #e0ebe6; }
+#chapters .quiz-option.wrong { background: #f1e6e1; }
+#chapters .quiz-welcome { padding-top: 4px; }
+#chapters .quiz-welcome > p { margin-bottom: 38px; }
+#chapters > footer {
+  position: relative; padding: 68px 24px 56px; background-color: var(--sheet);
+  background-image: var(--paper-grain); border-top: 1px solid #b3c6c9;
+  box-shadow: inset 0 7px 0 #cbd6dc;
+}
+#chapters > footer p { color: #497d7f; text-shadow: 0 1px #fff; }
+
+@media (max-width: 1000px) {
+  #chapters .section-wrap { padding: 78px 6%; }
+  #chapters .dates-section { gap: 42px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  #chapters .date-game { padding-inline: 22px; }
+  #chapters .quiz-section { gap: 48px; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+  #chapters .quiz-paper { padding: 32px 24px; }
+}
+@media (max-width: 760px) {
+  #chapters .section-wrap { padding: 64px 7%; }
+  #chapters .chapter-nav { height: 66px; gap: 12px; }
+  #chapters .dates-section { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  #chapters .dates-intro { padding-bottom: 0; }
+  #chapters .dates-intro::after { width: 76px; height: 76px; left: auto; right: 0; bottom: -2px; opacity: .6; }
+  #chapters .dates-intro .album-count { padding-right: 85px; }
+  #chapters .dates-intro .draft-note { max-width: none; }
+  #chapters .date-game { margin-right: 8px; padding: 46px 24px 22px; }
+  #chapters .date-slot { width: 58px; height: 76px; font-size: 46px; }
+  #chapters .date-entry { gap: 8px; }
+  #chapters .date-slash { font-size: 42px; margin-inline: 2px; }
+  #chapters .number-pool { min-height: 136px; }
+  #chapters .collage-title { display: block; }
+  #chapters .collage-title h2 { margin-bottom: 18px; }
+  #chapters .collage-title .draft-note { margin-top: 12px; }
+  #chapters .collage-board { padding: 16px 12px 12px; }
+  #chapters .collage-controls { margin-top: 16px; }
+  #chapters .quiz-section { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "paper"; gap: 32px; padding-bottom: 80px; }
+  #chapters .quiz-intro .handwritten { max-width: none; }
+  #chapters .quiz-paper { margin-left: 8px; padding: 30px 24px; min-height: 360px; }
+  #chapters .quiz-intro h2 br { display: none; }
+  #chapters > footer { padding: 54px 20px 42px; }
+}
+@media (max-width: 400px) {
+  #chapters .section-wrap { padding-inline: 6%; }
+  #chapters .date-game { padding-inline: 16px; }
+  #chapters .date-slot { width: 46px; height: 66px; font-size: 39px; }
+  #chapters .date-entry { gap: 5px; }
+  #chapters .date-controls { column-gap: 14px; }
+  #chapters .quiz-paper { padding-inline: 18px; }
+  #chapters .quiz-paper h3 { font-size: 21px; }
+  #chapters .chapter-nav { padding-inline: 5%; }
+  #chapters .chapter-nav > div { gap: 10px; }
+}

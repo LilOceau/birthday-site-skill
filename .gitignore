@@ -7,6 +7,9 @@ __pycache__/
 venv/
 node_modules/
 .pytest_cache/
+.work/
+.backups/
+manifests/
 .DS_Store
 Thumbs.db
 

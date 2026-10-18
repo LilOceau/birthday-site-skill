@@ -1,0 +1,66 @@
+/* 3:4 stage. Text, embroidered motif and suede surfaces are independent layers.
+   Shadow direction matches the reference's diffuse light from upper left. */
+.invitation{height:100svh;min-height:560px;position:relative;display:grid;place-items:center;isolation:isolate;overflow:hidden;color:#f3f6f2}
+.sea{position:absolute;inset:0;z-index:-2;background:#7393a2;overflow:hidden}
+.sea img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 49%}
+.invitation:after{position:absolute;inset:0;content:"";pointer-events:none;z-index:-1;background:linear-gradient(180deg,#21405100 72%,#21405130)}
+.opening-header{position:absolute;top:25px;left:5%;right:5%;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.19em;color:#f4f6f1;transition:opacity .6s}
+.cinema-frame{width:min(96vw,64.5svh,640px);aspect-ratio:3/4;position:relative;container-type:inline-size;flex:none}
+.envelope-scene{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 36%;isolation:isolate;transform:rotate(-4deg);transform-origin:50% 60.5%}
+.suede{background-color:#cbd6dc;background-image:linear-gradient(137deg,#ffffff1a,#567d8106 52%,#466b740b);background-size:100% 100%;isolation:isolate}
+/* Neutralize the nap itself so its warm RGB does not yellow the paper or tint the blue. */
+.suede:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:url('assets/demo/paper.png') center/310px 310px repeat;filter:grayscale(1);mix-blend-mode:multiply;opacity:.5}
+.shell-motion{position:absolute;left:8%;top:38%;width:84%;height:45%;transform:translateY(0);transform-origin:50% 50%;opacity:0}
+.envelope-rear{z-index:1;border-radius:3px;background:#bac9d0;box-shadow:1px 2px 0 #577a826b,0 3px 5px #214c5340,6px 18px 27px -9px #163d5059;}
+.envelope-lining{position:absolute;inset:0;border-radius:3px;box-shadow:inset 0 3px 9px #375f693d,inset 0 1px 0 #e7eef1b0;background-color:#b4c5cc}
+.envelope-front{z-index:3;pointer-events:none}
+.pocket-shadow{position:absolute;inset:0;filter:drop-shadow(0 -1px .6px #244f5830)}
+.envelope-pocket{position:absolute;inset:0;border-radius:2px;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);box-shadow:inset 1px 0 0 #edf3f590,inset -1px -1px 0 #557d8050;background-color:#cbd6dc;}
+.envelope-pocket:after{content:"";position:absolute;inset:0;background:linear-gradient(140deg,transparent 49.6%,#f4fffb36 49.8%,#577c8221 50.2%,transparent 50.6%),linear-gradient(220deg,transparent 49.6%,#f4fffb36 49.8%,#527b8221 50.2%,transparent 50.6%);opacity:.8}
+.fold{position:absolute;inset:0;pointer-events:none}.fold-left{clip-path:polygon(0 0,50% 55%,0 100%);background:linear-gradient(125deg,#fafff91c,#5b828516)}.fold-right{clip-path:polygon(100% 0,50% 55%,100% 100%);background:linear-gradient(230deg,#fafff911,#527b8020)}
+.envelope-flap-motion{z-index:4;pointer-events:none;perspective:1200px}
+.envelope-flap{position:absolute;left:0;top:0;width:100%;height:76%;transform-origin:50% 0%;transform:rotateX(0deg);transform-style:preserve-3d}
+.flap-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 3px 1.3px #345e6578)}
+.flap-material{position:absolute;inset:0;clip-path:polygon(0 0,100% 0,99.6% 4%,98% 9%,57% 83%,53.5% 88%,51% 89.5%,49% 89.5%,46.5% 88%,43% 83%,2% 9%,.4% 4%);background-color:#d3dde2;box-shadow:inset 0 1px 0 #edf3f6e0}
+.flap-inside{transform:rotateY(180deg)}.flap-inside .flap-material{background-color:#bdccd2;background-image:linear-gradient(180deg,#284d5726,transparent 26%,#fbffff17)}
+.envelope-title{position:absolute;inset:4% 5% auto;text-align:center;font-family:BirthdayScript,"Palatino Linotype",Georgia,serif;font-style:italic;font-size:9.3cqw;line-height:1.02;font-weight:500;letter-spacing:-.015em}
+.envelope-title span{display:block;white-space:nowrap}.envelope-title span+span{font-size:.79em;margin-top:.015em}
+.debossed{color:#497d7f;text-shadow:0 .8px .55px #eef5e9d9,0 -.7px .7px #244d556b}
+.envelope-title.debossed{color:#355f70;text-shadow:0 .8px .65px #f4f8facf,0 -.65px .7px #24485560}
+.envelope-hit{position:absolute;left:8%;top:38%;width:84%;height:45%;z-index:5;background:transparent;border-radius:3px;padding:0;opacity:0}
+.envelope-hit:disabled{visibility:hidden}.envelope-hit:focus-visible{outline:2px solid #fff9;outline-offset:10px}
+/* A static aperture moves with the pocket. The counter-moving carrier keeps
+   the sheet aligned; the open top stays above it even at the maximum drop. */
+.letter-sleeve{position:absolute;inset:0;z-index:2;clip-path:inset(-150vh 9% 17.5% 9%);pointer-events:none;transform:translateY(0)}
+.letter-carrier{position:absolute;inset:0;transform:translateY(0)}
+.letter{position:absolute;left:10%;top:7.5%;width:80%;height:80%;z-index:2;border-radius:1px;background-color:#f4f3ef;background-image:linear-gradient(133deg,#ffffff45,#ffffff00 52%,#737b8005);box-shadow:inset 1px 1px 0 #fffffff0,inset -1px -1px 0 #a6adb23b,1px 4px 5px #243f4b19,5px 18px 33px -12px #203f506b;opacity:0;transform:translateY(43%);transform-origin:50% 80%;overflow:hidden}
+.letter:before{opacity:.28}.letter:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 15px #e5e7e733;pointer-events:none}
+.letter-print{position:relative;z-index:1;width:100%;height:100%;padding:0;color:#59858c;text-shadow:0 .7px .6px #fff9,0 -.5px .5px #31535d4d}
+.letter h1{position:absolute;top:9.5%;left:6.5%;right:6.5%;margin:0;font-family:BirthdayScript,"Palatino Linotype",Georgia,serif;font-weight:500;font-style:italic;font-size:15cqw;letter-spacing:-.035em;line-height:1.15;white-space:pre;text-align:center}
+.print-line{display:block;width:max-content;max-width:none;clip-path:inset(-.2em 100% -.3em 0);white-space:pre}
+.letter h1 .print-line{margin:auto;padding:0 .035em .09em;max-width:none}
+.coconut{position:absolute;left:42%;top:30%;right:7%;font-size:1.63cqw;line-height:1.2;margin:0;letter-spacing:-.025em;text-align:left;font-weight:600}
+.coconut strong{font-size:2.3cqw;line-height:1.23;font-weight:700;letter-spacing:0}
+.letter-middle{position:absolute;top:53%;left:8%;right:8%;display:flex;justify-content:space-between;font-size:2cqw;font-weight:700;line-height:1.05}.letter-middle>span{flex:0 0 35%;min-width:max-content}.letter-middle>span:last-child{text-align:right}.letter-middle>span:last-child .print-line{margin-left:auto}
+.embroidered-palms{position:absolute;left:7%;bottom:6.5%;width:45%;height:32%;object-fit:contain;object-position:center bottom;opacity:0;clip-path:inset(100% 0 0 0);transform:scale(.94);transform-origin:50% 95%;filter:drop-shadow(.5px 1px .5px #3c645736);pointer-events:none}
+.letter-end{position:absolute;left:56%;right:6%;top:64%;bottom:8%;font-weight:700}.letter-end p{font-family:"Microsoft YaHei","PingFang SC",sans-serif;font-size:5.4cqw;font-weight:600;line-height:1.15;margin:0;letter-spacing:-.02em}.letter-end b{position:absolute;bottom:0;display:block;font-size:2.83cqw;line-height:1.08;letter-spacing:-.025em}
+.letter-end [data-print='chinese2']{margin-left:1em}
+.opening-actions{position:absolute;bottom:34px;left:20px;right:20px;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.opening-actions p{margin:0;font-size:13px;letter-spacing:.13em;color:#f2f5f0;text-shadow:0 1px 6px #284b5b;transition:opacity .4s}.opening-actions button{pointer-events:auto}
+.light-button{background:#f1f3eaeF;color:#315f69;border:1px solid #ffffff90;border-radius:0;padding:12px 25px;min-height:48px;font-size:14px;letter-spacing:.1em;box-shadow:0 5px 20px #284f6522}.light-button span{margin-left:24px;font-size:20px}.light-button:hover{background:white}
+.replay{position:absolute;bottom:15px;right:5%;background:none;color:#f5f6ed;font-size:12px;padding:6px 0;text-decoration:underline;text-underline-offset:5px}
+.invitation[data-phase='loading'] .opening-header,.invitation[data-phase='arriving'] .opening-header{opacity:0}
+.invitation[data-phase='loading'] #openingHint{opacity:0}
+.invitation[data-phase='ready'] .shell-motion,.invitation[data-phase='ready'] .envelope-hit{opacity:1}
+.invitation[data-phase='opening'] #openingHint{opacity:0}
+.invitation:not([data-phase='opened']) .shell-motion,.invitation:not([data-phase='opened']) .letter{will-change:transform,opacity}
+.invitation:not([data-phase='opened']) .envelope-scene,.invitation:not([data-phase='opened']) .envelope-flap,.invitation:not([data-phase='opened']) .letter-sleeve,.invitation:not([data-phase='opened']) .letter-carrier{will-change:transform}
+.invitation[data-phase='opened'] .envelope-scene{transform:rotate(0deg)}
+.invitation[data-phase='opened'] .letter-sleeve{clip-path:inset(0)}
+.invitation[data-phase='opened'] .letter{transform:none;clip-path:inset(0);opacity:1}
+.invitation[data-phase='opened'] .print-line{clip-path:none}
+.invitation[data-phase='opened'] .embroidered-palms{clip-path:inset(0);opacity:1;transform:none}
+.invitation[data-phase='ready'] .envelope-title{transition:color .3s}
+@media(max-width:600px){.invitation{min-height:560px}.opening-header{top:23px;font-size:10px;letter-spacing:.12em}.opening-actions{bottom:42px}.replay{bottom:14px}.cinema-frame{width:min(100vw,65svh)}.suede:before{background-size:240px 240px}.opening-actions p{font-size:12px}}
+@media(max-height:600px) and (min-width:601px){.invitation{min-height:420px}.opening-header{top:18px}.opening-actions{bottom:15px}.replay{bottom:10px}.cinema-frame{width:60svh}}
+@media(prefers-reduced-motion:reduce){.opening-header,#openingHint{transition:none}}

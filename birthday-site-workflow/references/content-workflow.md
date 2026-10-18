@@ -1,5 +1,7 @@
 # 内容与媒体流水线
 
+本页描述已有旧版项目的维护约定。附带模板使用 site.json/content.json、assets/imported/ 和 manifests/，操作见 [build-project.md](build-project.md)。不要对新模板执行本页的旧版专用参数。
+
 ## 项目布局和依赖
 
 项目通常位于 `网站及发布更新/birthday-site/`。上级工作区保留 `随机日期照片/`、`拼贴照片/确认上传成片/`、`趣味问答/`、开场参考与原始素材。不要依赖某台机器的盘符或用户名。
