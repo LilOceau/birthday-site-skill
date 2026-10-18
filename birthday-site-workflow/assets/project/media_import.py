@@ -69,9 +69,14 @@ def convert(source,kind):
         if kind=='live':photo['original']='still-full.webp'
         report['videoStreamHash']=source_stream
     if digest(source)!=source_sha:raise ValueError('Source changed during import')
+    outputs=sorted(p for p in stage.iterdir() if p.name!='frame.png')
+    # Different FFmpeg builds may write different MP4 metadata with the same video stream.
+    # Keep the original output intact and address this variant by its actual output bytes.
+    if any((final/p.name).exists() and digest(final/p.name)!=digest(p) for p in outputs):
+        variant=hashlib.sha256(''.join(p.name+digest(p) for p in outputs).encode()).hexdigest()[:16]
+        final=final.with_name(identity+'-'+variant)
     final.mkdir(parents=True,exist_ok=True)
-    for path in stage.iterdir():
-        if path.name=='frame.png':continue
+    for path in outputs:
         target=final/path.name
         if target.exists() and digest(target)!=digest(path):raise ValueError('Existing content-addressed asset differs; retain both for review')
         if not target.exists():shutil.copy2(path,target)

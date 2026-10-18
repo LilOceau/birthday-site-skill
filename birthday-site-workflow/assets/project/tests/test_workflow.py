@@ -33,6 +33,13 @@ class Workflow(unittest.TestCase):
         source=self.root/'materials/photos/06.15';shutil.copy2(source/'01-seaside.png',source/'another-1.png')
         before=(self.root/'content.json').read_bytes();self.run_script('import-materials.py','--date','06.15',ok=False)
         self.assertEqual(before,(self.root/'content.json').read_bytes())
+    def test_different_encoded_output_is_retained_as_a_variant(self):
+        before=self.read('content.json');photo=before['memories'][0]['photos'][0]
+        old=self.root/'dist'/photo['thumb'];different=old.read_bytes()+b'different-encoder-metadata';old.write_bytes(different)
+        self.run_script('import-materials.py','--date','06.15');after=self.read('content.json')
+        self.assertEqual(old.read_bytes(),different)
+        self.assertNotEqual(photo['src'],after['memories'][0]['photos'][0]['src'])
+        self.assertEqual(before['memories'][1],after['memories'][1])
     def test_collage_import_preserves_albums_and_quiz(self):
         before=self.read('content.json');self.run_script('import-collages.py');after=self.read('content.json')
         for key in ['memories','quiz']:self.assertEqual(before[key],after[key])
