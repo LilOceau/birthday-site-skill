@@ -36,7 +36,8 @@ class InvitationPlayer {
     for(const line of this.printLines){
       line.style.fontSize='';
       const available=line.parentElement.clientWidth-4;
-      const width=line.getBoundingClientRect().width;
+      // Layout width is independent of the envelope's animated scale/rotation.
+      const width=Math.max(line.offsetWidth,line.scrollWidth);
       if(available>0&&width>available)line.style.fontSize=(parseFloat(getComputedStyle(line).fontSize)*available/width*.96)+'px';
     }
   }

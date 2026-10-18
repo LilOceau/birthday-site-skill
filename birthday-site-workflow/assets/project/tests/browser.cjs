@@ -12,7 +12,7 @@ async function check(page,base,label){
   page.on('request',r=>requests.push(r.url()));
   await page.goto(base);await page.locator('#openEnvelope').click();
   await page.locator('#enterMemories').waitFor({state:'visible',timeout:15000});
-  assert(await page.locator('.letter h1 .print-line').evaluate(line=>line.getBoundingClientRect().width<=line.parentElement.clientWidth),'Letter title overflows');
+  assert(await page.locator('.letter h1 .print-line').evaluate(line=>line.getBoundingClientRect().width<=line.parentElement.getBoundingClientRect().width),'Letter title overflows');
   assert(!requests.some(url=>/original\.(png|jpg|webp)/.test(url)),'Originals loaded before opening a picture');
   await page.screenshot({path:path.join(root,'.local',label+'-letter.png')});
   await page.locator('#enterMemories').click();await page.locator('#startMemory').click();
