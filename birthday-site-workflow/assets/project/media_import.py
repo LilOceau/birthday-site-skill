@@ -8,15 +8,16 @@ import re
 import shutil
 import subprocess
 import uuid
-from project_lib import ROOT,read_json,digest,commit_content,write_json,valid_date
+from project_lib import ROOT,read_json,digest,commit_content,write_json,valid_date,load_configuration
+from data_validation import integer
 
 EXTENSIONS={'.png','.jpg','.jpeg','.webp','.mp4'}
 
 def sequence(path,options):
     override=options.get('sequence_overrides',{}).get(path.parent.name,{}).get(path.name)
     if override is not None:
-        if type(override) is not int or override<1:raise ValueError('Sequence override must be a positive integer')
-        return override
+        integer(override, 'Sequence override', 1)
+        return int(override)
     # Prefer explicit suffix numbering over a timestamp-like leading number.
     match=re.search(r'[-_](\d+)$',path.stem) or re.match(r'^(\d+)(?:\D|$)',path.stem)
     if not match or len(match[1])>6:raise ValueError('Add a sequence_overrides entry for '+path.name)
@@ -91,7 +92,7 @@ def import_media(mode):
     if mode=='photos':parser.add_argument('--date',required=True,help='One existing MM.DD folder; importing is incremental')
     parser.add_argument('--source',type=pathlib.Path,help='Explicit source root override (read only)')
     args=parser.parse_args()
-    options=read_json(ROOT/'import-options.json')
+    _,content,options=load_configuration()
     source=(args.source or ROOT/'materials'/mode).resolve(strict=True)
     if mode=='photos':
         if not re.fullmatch(r'\d{2}\.\d{2}',args.date) or not valid_date(args.date.replace('.','/')):raise ValueError('Invalid MM.DD date')
@@ -105,7 +106,7 @@ def import_media(mode):
         numbered.append((sequence(path,options),path))
     numbered.sort(key=lambda pair:pair[0])
     if len({n for n,_ in numbered})!=len(numbered):raise ValueError('Duplicate sequence numbers; no content was changed')
-    content=read_json(ROOT/'content.json');updated=copy.deepcopy(content);photos=[];reports=[]
+    updated=copy.deepcopy(content);photos=[];reports=[]
     for number,path in numbered:
         live=mode=='photos' and path.suffix.lower()=='.mp4' and ('live' in path.stem.lower() or args.date in options.get('live_dates',[]))
         kind='collage' if mode=='collages' else 'live' if live else 'video' if path.suffix.lower()=='.mp4' else 'image'

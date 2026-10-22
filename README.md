@@ -36,12 +36,12 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 
 安装器只需安装 skill 子目录，完整工程已包含在里面。有旧版本时先保留本地修改，再更新整个目录。已有私人站点继续走维护流程，不要用模板覆盖旧工程。
 
-## 版本 0.2.0 包含什么
+## 版本 0.2.1 包含什么
 
 | 能力 | 实现与入口 |
 | --- | --- |
 | 创建独立工程 | scripts/create_project.py；新目录保护、独立浏览进度 ID |
-| 内容配置 | site.json / content.json；build.py 检查日期、引用、答案并生成网页内容 |
+| 内容配置 | 三份 JSON Schema、数据格式规范 v1、只读校验；build.py 生成网页内容 |
 | 完整前端 | 信封动画、日期相册、Live/普通视频、缩放、拼贴翻页与总览、图片问答 |
 | 媒体导入 | 按日期增量导入、编号校验、原件哈希、H.264 视频流保留、备份与清单 |
 | 本地预览 | Python 标准库服务，支持视频 Range 请求 |
@@ -50,6 +50,12 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 | 旧站维护 | 原有只读检查器与内容/清理/回滚工作流程仍保留 |
 
 默认演示含 **2 个日期、5 个媒体（其中 1 段 Live、1 个普通视频）、2 张拼贴、3 道问答**。全部图片为原创几何插画，短片为程序生成，无人物照片、私人问答、原站部署地址或第三方字体。
+
+## 数据格式规范
+
+三份配置的字段、日期、资源路径、媒体类型、答案索引和导入编号见 [数据格式规范 v1](birthday-site-workflow/assets/project/docs/content-model.md)。[schemas/](birthday-site-workflow/assets/project/schemas/) 提供编辑器可用的 Draft 2020-12 Schema，附带 JSON 即为完整虚构示例。新旧示例均可校验；不声明 schemaVersion 时按 v1 解释。
+
+在工程目录运行 `python validate_data.py`，即可只读检查三份配置及资源引用，不需要额外安装依赖。
 
 ## 替换自己的内容
 
@@ -77,7 +83,8 @@ python build.py --check
 | 操作 | 依赖 |
 | --- | --- |
 | 初始化、改文案、构建、预览、导出 | Python 3.11+ 标准库 |
-| 图片与视频导入、Python 集成测试 | requirements.txt 中的 Pillow、imageio-ffmpeg |
+| 图片与视频导入 | requirements.txt 中的 Pillow、imageio-ffmpeg |
+| Python 测试及 Schema 一致性检查 | requirements-dev.txt，含导入依赖和 jsonschema |
 | 浏览器回归 | Node.js 22+、锁定版本的 Playwright 和浏览器 |
 | 只读 inspect_site.py | Python 3.11+、Node.js；只用于受信任的本地工程 |
 | 上线 | 自选静态托管；账号、站点和授权由使用者提供 |
@@ -85,7 +92,9 @@ python build.py --check
 在新工程目录验证和导出：
 
 ```text
+python validate_data.py
 python build.py --check
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 npm ci
 npx playwright install chromium

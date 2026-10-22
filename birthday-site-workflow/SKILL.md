@@ -23,6 +23,7 @@ python <skill目录>/scripts/inspect_site.py --site <生日网站目录> --outpu
 
 ## 选择工作流程
 
+- 修改完整工程的数据格式或内容配置：阅读 [数据格式规范 v1](assets/project/docs/content-model.md)，参照 `assets/project/schemas/` 和附带 JSON 示例。运行工程内 `python validate_data.py`，再执行构建检查；保留未修改的数据和扩展元数据，不将此规范强套到旧版直接维护 content.js 的站点。
 - 增加日期照片、Live、拼贴、原图或问答：阅读 [references/content-workflow.md](references/content-workflow.md)。使用项目原有脚本与配置，不复制另一份导入器导致分叉。
 - 修改交互、验证或发布：阅读 [references/validation-release.md](references/validation-release.md)。发布到当前用户指定的目标，不把 Sites 私有备份与 Netlify 正式站混为一谈。
 - 整理缓存、中间文件或回滚：阅读 [references/retention.md](references/retention.md)。先证明依赖关系和副本完整性，再清理。

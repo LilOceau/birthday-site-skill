@@ -16,8 +16,8 @@ python <skill目录>/scripts/create_project.py <新目录> --recipient 小夏 --
 
 ## 完成交付的证据
 
-1. 修改配置并运行 build.py --check，无缺失素材或非法日期/答案。
-2. 执行 unittest；它验证增量导入不会改变其他内容、来源文件不变、编号冲突不会写入内容、备份存在、导出范围和视频 Range。
+1. 按 [数据格式规范 v1](../assets/project/docs/content-model.md) 修改配置，运行 `python validate_data.py` 和 `python build.py --check`，检查格式、资源、相册关系和生成文件。
+2. 安装 `requirements-dev.txt` 并执行 unittest；它验证 Schema 与运行时约束一致、非法配置不触发写入、增量导入不会改变其他内容、来源文件不变、编号冲突不会写入内容、备份存在、导出范围和视频 Range。
 3. 执行 npm run test:browser，审阅桌面/手机尺寸截图；重大交互修改再补针对性检查。真实移动设备另行注明是否验证。
 4. 说明预览地址和停止方式。用户有发布意图时按指定目标上传验收版本，不预置共享站点或声称日期解锁能保护隐私。
 

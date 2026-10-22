@@ -1,4 +1,6 @@
 {
+  "$schema": "./schemas/site.schema.json",
+  "schemaVersion": 1,
   "id": "birthday-demo",
   "recipient": "小夏",
   "title": "A day for you",

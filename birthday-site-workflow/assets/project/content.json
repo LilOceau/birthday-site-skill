@@ -1,4 +1,6 @@
 {
+  "$schema": "./schemas/content.schema.json",
+  "schemaVersion": 1,
   "memories": [
     {
       "date": "06/15",

@@ -25,6 +25,8 @@ python serve.py
 | `dist/*.css`、`dist/app.js` 等 | 样式、交互源码，直接编辑并保留 |
 | `import-options.json` | Live 日期和文件编号覆盖 |
 
+完整字段、必填项、媒体类型、默认值、路径与版本兼容规则见 [数据格式规范 v1](docs/content-model.md)。三份 JSON 自带本地 Schema 引用，编辑器可提供补全和错误提示；运行 `python validate_data.py` 可只读检查配置和资源，无需额外安装依赖。
+
 每次修改后运行 `python build.py`。构建只生成 `dist/index.html` 和 `dist/content.js`，不会重建整个 dist。**不要删除 dist**：其余 JS、CSS、媒体都是工程必需文件。构建前的生成文件会保存到 `.backups/`。
 
 `site.id` 决定浏览器进度存储键；初始化器自动生成独立 ID。修改 ID 会开始新的进度，旧记录仍保留在浏览器中。title 最长 48 字符、recipient 最长 32 字符；较长文案需要自行预览排版。
@@ -97,7 +99,9 @@ MP4 文件名包含 `live`，或所属 MM.DD 在 `live_dates` 中时，作为静
 ## 检查与打包
 
 ```text
+python validate_data.py
 python build.py --check
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 npm ci
 npx playwright install chromium
@@ -105,7 +109,7 @@ npm run test:browser
 python export.py release/birthday-site.zip
 ```
 
-前两项需要 Python，导入集成测试还需 requirements.txt；浏览器测试需要 Node.js 22+ 和 Playwright。测试使用临时工程/独立浏览器，不访问个人浏览器资料。截图保存在 `.local/`，测试自动关闭服务。可通过 `PYTHON`、`PLAYWRIGHT_MODULE`、`CHROMIUM_PATH` 环境变量选择已有运行时。手机尺寸测试不等于真实 iOS/Safari 验收。
+只读校验和构建只需 Python 标准库；Python 测试使用 requirements-dev.txt（包含导入依赖与 jsonschema），覆盖格式一致性、字段边界和导入保护；浏览器测试需要 Node.js 22+ 和 Playwright。测试使用临时工程/独立浏览器，不访问个人浏览器资料。截图保存在 `.local/`，测试自动关闭服务。可通过 `PYTHON`、`PLAYWRIGHT_MODULE`、`CHROMIUM_PATH` 环境变量选择已有运行时。手机尺寸测试不等于真实 iOS/Safari 验收。
 
 export.py 拒绝过期构建和已有输出路径，只打包 dist 内容。它也会包含 dist 中保留的旧媒体，**导出不是隐私过滤器**；上线前检查 dist 及内容。日期解锁只是互动，所有部署资源都可以被访问，不能作为照片访问控制。
 

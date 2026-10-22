@@ -1,12 +1,13 @@
 """Build configured HTML/content without rewriting hand-maintained JS/CSS/assets."""
 import argparse
-from project_lib import ROOT,read_json,render,atomic_write,backup
+from project_lib import ROOT,load_configuration,render,atomic_write,backup
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check',action='store_true',help='Validate and require generated files to be up to date')
     args=parser.parse_args()
-    page,js=render(read_json(ROOT/'site.json'),read_json(ROOT/'content.json'))
+    site,content,_=load_configuration()
+    page,js=render(site,content)
     outputs={ROOT/'dist/index.html':page,ROOT/'dist/content.js':js}
     changed=[path for path,data in outputs.items() if not path.is_file() or path.read_bytes()!=data]
     if args.check:

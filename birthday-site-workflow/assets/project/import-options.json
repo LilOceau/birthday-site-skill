@@ -1,4 +1,8 @@
 {
-  "live_dates": ["06.15"],
+  "$schema": "./schemas/import-options.schema.json",
+  "schemaVersion": 1,
+  "live_dates": [
+    "06.15"
+  ],
   "sequence_overrides": {}
 }

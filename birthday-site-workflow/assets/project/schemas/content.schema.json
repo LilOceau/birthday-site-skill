@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Birthday site content",
+  "description": "Data format version 1. Additional metadata is allowed; recognized fields are validated.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "pattern": "\\S",
+      "description": "Editor schema reference; not fetched by build.py."
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "default": 1,
+      "description": "Omission means version 1. Unsupported versions are rejected."
+    },
+    "memories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/album"
+      }
+    },
+    "collage": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/collage"
+      }
+    },
+    "quiz": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/question"
+      }
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "memories",
+    "collage",
+    "quiz"
+  ],
+  "$defs": {
+    "assetPath": {
+      "type": "string",
+      "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])",
+      "description": "Canonical path relative to dist: assets/..., no URL, traversal, query, fragment or percent escapes."
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^(?:(?:01|03|05|07|08|10|12)/(?:0[1-9]|[12][0-9]|3[01])|(?:04|06|09|11)/(?:0[1-9]|[12][0-9]|30)|02/(?:0[1-9]|1[0-9]|2[0-9]))(?![\\s\\S])"
+    },
+    "media": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "src": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "thumb": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "preview": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "poster": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "original": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "caption": {
+              "type": "string"
+            },
+            "alt": {
+              "type": "string"
+            },
+            "type": {
+              "const": "image"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "type",
+            "src",
+            "thumb"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "src": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/assetPath"
+                },
+                {
+                  "pattern": "\\.live\\.mp4(?![\\s\\S])"
+                }
+              ]
+            },
+            "thumb": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "preview": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "poster": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "original": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "caption": {
+              "type": "string"
+            },
+            "alt": {
+              "type": "string"
+            },
+            "type": {
+              "const": "live"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "type",
+            "src",
+            "thumb",
+            "poster"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "src": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "thumb": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "preview": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "poster": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "original": {
+              "$ref": "#/$defs/assetPath"
+            },
+            "caption": {
+              "type": "string"
+            },
+            "alt": {
+              "type": "string"
+            },
+            "type": {
+              "const": "video"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "type",
+            "src",
+            "thumb",
+            "poster"
+          ]
+        }
+      ]
+    },
+    "album": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "\\S"
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/media"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "date",
+        "title",
+        "photos"
+      ]
+    },
+    "collage": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "thumb": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "preview": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "poster": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "original": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "src",
+        "preview",
+        "thumb",
+        "width",
+        "height"
+      ]
+    },
+    "imageOption": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "thumb": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "preview": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "poster": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "original": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "\\S"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "label",
+        "src",
+        "preview"
+      ]
+    },
+    "explanationImage": {
+      "type": "object",
+      "properties": {
+        "src": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "thumb": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "preview": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "poster": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "original": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "src"
+      ]
+    },
+    "question": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "maxLength": 1000,
+          "pattern": "\\S"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "pattern": "\\S"
+              },
+              {
+                "$ref": "#/$defs/imageOption"
+              }
+            ]
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "answer": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Zero-based option index; null or omitted means unscored."
+        },
+        "explanation": {
+          "type": "string"
+        },
+        "explanationImages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/explanationImage"
+          }
+        },
+        "pendingImages": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "question",
+        "options"
+      ]
+    }
+  }
+}
