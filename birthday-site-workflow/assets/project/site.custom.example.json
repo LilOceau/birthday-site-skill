@@ -1,0 +1,42 @@
+{
+  "$schema": "./schemas/site.schema.json",
+  "schemaVersion": 1,
+  "id": "birthday-demo",
+  "recipient": "小夏",
+  "title": "Days to remember",
+  "year": 2026,
+  "description": "一份可以慢慢翻看的生日记忆。",
+  "letterLine": "A little birthday story",
+  "letterDescription": "Every small moment matters.",
+  "welcomeDate": "06/15",
+  "theme": {
+    "background": "#f2e9df",
+    "ink": "#684c45",
+    "accent": "#a76b52",
+    "paper": "#fff8ee",
+    "envelope": "#d9c1b2"
+  },
+  "assets": {
+    "background": "assets/demo/choice-1.png",
+    "motif": "assets/demo/botanical.svg",
+    "texture": "assets/demo/paper.png",
+    "motifAlt": "生日信笺的枝叶装饰"
+  },
+  "sections": {"dates": true, "collage": false, "quiz": true},
+  "behavior": {
+    "persistProgress": false,
+    "liveAutoplay": false,
+    "backgroundPreload": false,
+    "openingMotion": "reduced",
+    "hintAfterAttempts": 1
+  },
+  "labels": {
+    "headerRight": "A LETTER FOR YOU",
+    "datesTitle": "收藏日子，\n慢慢回看。",
+    "quizWelcome": "{recipient}的记忆小测验",
+    "quizCorrect": "记得真清楚！",
+    "quizScore": "本轮答对 {score} / {total}",
+    "quizThanks": "愿{recipient}的下一年也有许多值得收藏的瞬间。",
+    "footerMessage": "May every day be a little brighter."
+  }
+}

@@ -61,6 +61,600 @@
       "type": "string",
       "maxLength": 100,
       "pattern": "\\S"
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "default": "#e7eeed",
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?![\\s\\S])"
+        },
+        "ink": {
+          "default": "#315f69",
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?![\\s\\S])"
+        },
+        "accent": {
+          "default": "#7295a7",
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?![\\s\\S])"
+        },
+        "paper": {
+          "default": "#f4f3ef",
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?![\\s\\S])"
+        },
+        "envelope": {
+          "default": "#cbd6dc",
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}(?![\\s\\S])"
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "background": {
+          "default": "assets/demo/sea.png",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "motif": {
+          "default": "assets/demo/botanical.svg",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "texture": {
+          "default": "assets/demo/paper.png",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "motifAlt": {
+          "default": "青绿色枝叶图案",
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dates": {
+          "default": true,
+          "type": "boolean"
+        },
+        "collage": {
+          "default": true,
+          "type": "boolean"
+        },
+        "quiz": {
+          "default": true,
+          "type": "boolean"
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "persistProgress": {
+          "default": true,
+          "type": "boolean"
+        },
+        "liveAutoplay": {
+          "default": true,
+          "type": "boolean"
+        },
+        "backgroundPreload": {
+          "default": true,
+          "type": "boolean"
+        },
+        "openingMotion": {
+          "default": "auto",
+          "type": "string",
+          "enum": [
+            "auto",
+            "reduced"
+          ]
+        },
+        "hintAfterAttempts": {
+          "default": 2,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pageSuffix": {
+          "default": "生日邀请函",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "headerRight": {
+          "default": "WITH LOVE, ALWAYS",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "envelopeTop": {
+          "default": "Happy",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "envelopeBottom": {
+          "default": "birthday",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "letterLeftTop": {
+          "default": "A SEAT",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "letterLeftBottom": {
+          "default": "IN OUR",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "letterRightTop": {
+          "default": "SUMMER",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "letterRightBottom": {
+          "default": "STORY",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "birthdayLabel": {
+          "default": "生日",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "invitationLabel": {
+          "default": "邀请函",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "invitationEnglish": {
+          "default": "INVITATION",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "openingLoading": {
+          "default": "海风捎来了一封信",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "openingReady": {
+          "default": "轻触信封，打开这份生日邀请",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "openingOpened": {
+          "default": "生日邀请函已展开",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "enterButton": {
+          "default": "走进这一年",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "replayButton": {
+          "default": "重读这封信",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "navDates": {
+          "default": "日期照片",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "navCollage": {
+          "default": "拼贴照片",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "navQuiz": {
+          "default": "趣味问答",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "datesEyebrow": {
+          "default": "Remember the day?",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "datesTitle": {
+          "default": "把日子拼起来，\n让回忆显影。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "datesDescription": {
+          "default": "选取四个数字组成正确日期即可解锁当日回忆",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "welcomeButton": {
+          "default": "带我看一段回忆",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "unlockedLabel": {
+          "default": "段回忆已解锁",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "datesSummary": {
+          "default": "{dateCount}个日期，{photoCount}个瞬间，等你逐一开启。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:dateCount|photoCount)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {dateCount}, {photoCount}"
+        },
+        "hintButton": {
+          "default": "给我提示",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "unlockButton": {
+          "default": "解锁这一天",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateSelected": {
+          "default": "选好日期后，试着解锁这一天。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateInvalid": {
+          "default": "这个日期好像不成立，检查一下月份和天数吧。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateMissing": {
+          "default": "这一天还没有照片，再想一个日子吧。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateUnlocked": {
+          "default": "日期猜对了！这一天的照片，已经为你打开。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateWelcome": {
+          "default": "先从这段回忆开始。其他日子，等你逐个解锁。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateReset": {
+          "default": "重新选一个，值得被记住的日子。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateAllUnlocked": {
+          "default": "所有日期都已解锁，点开下面的相册，再看一遍吧。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "dateCalendarLead": {
+          "default": "按 {year} 年的日历想一想：",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:year)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {year}"
+        },
+        "collageEyebrow": {
+          "default": "Pieces of you",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "collageTitle": {
+          "default": "关于你的，\n每一小片。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "collageDescription": {
+          "default": "把喜欢的瞬间，\n拼成一张独一无二的你。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "collageHelp": {
+          "default": "左右滑动，或点击左右键翻看。\n轻触照片，放大看细节。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "overviewOpen": {
+          "default": "查看全部 {count} 张",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:count)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {count}"
+        },
+        "overviewClose": {
+          "default": "收起拼贴总览",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "overviewNote": {
+          "default": "按原有编号排列，轻触任意一张放大查看。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "progressSaved": {
+          "default": "浏览进度保存在当前浏览器",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "progressSession": {
+          "default": "浏览进度仅在本次访问中保留",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "progressUnavailable": {
+          "default": "当前浏览器暂无法保存进度，本次浏览不受影响",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizEyebrow": {
+          "default": "How well do you remember?",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizTitle": {
+          "default": "这道题，\n你一定知道。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizLabel": {
+          "default": "默契小测验",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizWelcome": {
+          "default": "关于{recipient}，你了解多少？",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:recipient)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {recipient}"
+        },
+        "quizSummary": {
+          "default": "共 {count} 道题，来试试我们的默契。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:count)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {count}"
+        },
+        "quizStart": {
+          "default": "开始答题",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizNext": {
+          "default": "下一题",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizSkip": {
+          "default": "跳过，下一题",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizResultButton": {
+          "default": "看看结果",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizRetry": {
+          "default": "再玩一次",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizCorrect": {
+          "default": "答对啦！",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizWrong": {
+          "default": "这次的答案是 {answer}。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:answer)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {answer}"
+        },
+        "quizPendingAnswer": {
+          "default": "你选择了 {answer}，答案待揭晓。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:answer)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {answer}"
+        },
+        "quizPendingImages": {
+          "default": "头像图片待补充，这题先跳过。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizScore": {
+          "default": "答对了 {score} / {total} 题",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:score|total)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {score}, {total}"
+        },
+        "quizComplete": {
+          "default": "本轮问答已完成",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizPartial": {
+          "default": "图片或答案待补充的题目暂不计分。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizThanks": {
+          "default": "谢谢你，陪我把这些瞬间再记了一遍。生日快乐，{recipient}！",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}]|\\{(?:recipient)\\})*(?![\\s\\S])",
+          "description": "Plain text. Tokens: {recipient}"
+        },
+        "quizSavedSummary": {
+          "default": "已保留这台设备上的答题进度。",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizSavedResult": {
+          "default": "查看上次结果",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "quizContinue": {
+          "default": "继续上次答题",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "footerMessage": {
+          "default": "Happy birthday.",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        },
+        "backToLetter": {
+          "default": "回到这封信",
+          "type": "string",
+          "maxLength": 500,
+          "pattern": "^(?:[^{}])*(?![\\s\\S])",
+          "description": "Plain text. Tokens: none"
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
     }
   },
   "additionalProperties": true,

@@ -1,18 +1,24 @@
 'use strict';
 const $ = (s) => document.querySelector(s);
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const supplied = window.BIRTHDAY_CONTENT || {};
+const siteConfig=supplied.config||{},siteBehavior=siteConfig.behavior||{};
+const sectionEnabled=name=>siteConfig.sections?.[name]!==false;
+const reduceMotion=siteBehavior.openingMotion==='reduced'||matchMedia('(prefers-reduced-motion: reduce)').matches;
+function uiText(key,params={}){
+  const values={recipient:supplied.recipient||'你',...params};
+  return (siteConfig.labels?.[key]||'').replace(/\{([a-zA-Z]+)\}/g,(token,name)=>Object.hasOwn(values,name)?String(values[name]):token);
+}
 // Only completed user actions are persisted; blocked storage falls back to this visit.
 const progressKey='birthday-'+(supplied.siteId||'demo')+'-progress-v1';
 let progress={};
-try{const saved=JSON.parse(localStorage.getItem(progressKey));if(saved&&saved.version===1)progress=saved;}catch{}
-function saveProgress(){try{localStorage.setItem(progressKey,JSON.stringify({...progress,version:1}));return true;}catch{return false;}}
+try{const saved=siteBehavior.persistProgress===false?null:JSON.parse(localStorage.getItem(progressKey));if(saved&&saved.version===1)progress=saved;}catch{}
+function saveProgress(){if(siteBehavior.persistProgress===false)return false;try{localStorage.setItem(progressKey,JSON.stringify({...progress,version:1}));return true;}catch{return false;}}
 function savedPhotoIndex(key,photos){const saved=progress.positions?.[key],src=typeof saved==='string'?saved.replace(/\.live\.webp$/,'.live.mp4'):saved;const index=photos.findIndex(p=>p.src===src);return Math.max(0,index);}
 function rememberPhoto(key,photo){if(!key||!photo)return;if(!progress.positions||typeof progress.positions!=='object'||Array.isArray(progress.positions))progress.positions={};progress.positions[key]=photo.src;if(memories.some(m=>m.date===key))progress.lastAlbum=key;saveProgress();}
-const memories=Array.isArray(supplied.memories)?supplied.memories:[];
+const memories=sectionEnabled('dates')&&Array.isArray(supplied.memories)?supplied.memories:[];
 const isDemo=false;
-if(!isDemo) $('#dateNote').textContent=memories.length+'个日期，'+memories.reduce((n,m)=>n+m.photos.length,0)+'个瞬间，等你逐一开启。';
+if(!isDemo) $('#dateNote').textContent=uiText('datesSummary',{dateCount:memories.length,photoCount:memories.reduce((n,m)=>n+m.photos.length,0)});
 let digits=['','','',''];let currentSlot=0;
 let failedDateAttempts=0,lastHintDate=null;
 const hintYear=Number.isInteger(supplied.hintYear)?supplied.hintYear:2026;
@@ -45,7 +51,7 @@ function selectDigit(d){
   if(digits[currentSlot]!==String(d))digits.fill('',currentSlot+1);
   digits[currentSlot]=String(d);
   if(currentSlot<3) currentSlot++;
-  updateDigits();slots[currentSlot].focus({preventScroll:true});dateMessage('选好日期后，试着解锁这一天。');
+  updateDigits();slots[currentSlot].focus({preventScroll:true});dateMessage(uiText('dateSelected'));
 }
 function dateMessage(text,error=false){$('#dateMessage').textContent=text;$('#dateMessage').classList.toggle('error',error);}
 function shuffleDigits(){
@@ -67,7 +73,7 @@ function validDate(date){
 }
 function recordDateFailure(){
   failedDateAttempts++;
-  if(failedDateAttempts===2){
+  if((siteBehavior.hintAfterAttempts??2)>0&&failedDateAttempts===(siteBehavior.hintAfterAttempts??2)){
     const button=$('#dateHint');button.hidden=false;
     if(!reduceMotion)button.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:300,easing:'ease-out'});
   }
@@ -83,15 +89,15 @@ function calendarHint(date){
 function unlockDate(){
   const date=digits.slice(0,2).join('')+'/'+digits.slice(2).join('');
   const complete=digits.length===4&&digits.every(d=>/^\d$/.test(d));
-  if(!complete||!validDate(date)){if(complete)recordDateFailure();dateMessage('这个日期好像不成立，检查一下月份和天数吧。',true);return {ok:false,reason:'invalid_date'};}
+  if(!complete||!validDate(date)){if(complete)recordDateFailure();dateMessage(uiText('dateInvalid'),true);return {ok:false,reason:'invalid_date'};}
   const matching=memories.filter(m=>m.date===date);
   const photos=matching.flatMap(m=>Array.isArray(m.photos)?m.photos:[]);
-  if(!matching.length){recordDateFailure();dateMessage('这一天还没有照片，再想一个日子吧。',true);return {ok:false,reason:'no_memory'};}
+  if(!matching.length){recordDateFailure();dateMessage(uiText('dateMissing'),true);return {ok:false,reason:'no_memory'};}
   if(!photos.length){recordDateFailure();dateMessage('日期猜对了，这一天的照片还在准备中。');return {ok:false,reason:'photos_pending'};}
   const album={date,title:matching[0].title||date,photos};
   addUnlockedAlbum(album);
   progress.unlocked=[...unlocked];saveProgress();
-  dateMessage('日期猜对了！这一天的照片，已经为你打开。');openAlbum(album);
+  dateMessage(uiText('dateUnlocked'));openAlbum(album);
   return {ok:true,date,photoCount:photos.length};
 }
 function addUnlockedAlbum(album){
@@ -117,14 +123,14 @@ $('#startMemory').addEventListener('click',()=>{
   if(!welcomePhotos.length)return;
   const album={date:supplied.welcomeDate,title:welcomeMemories[0].title||supplied.welcomeDate,photos:welcomePhotos};
   addUnlockedAlbum(album);progress.unlocked=[...unlocked];saveProgress();
-  dateMessage('先从这段回忆开始。其他日子，等你逐个解锁。');
+  dateMessage(uiText('dateWelcome'));
   openAlbum(album);
 });
 slots.forEach((slot,i)=>slot.addEventListener('click',()=>{if(digits.slice(0,i).some(d=>d===''))return;currentSlot=i;updateDigits();}));
 $('#shuffleDigits').addEventListener('click',shuffleDigits);
 function eraseDigit(){if(!digits[currentSlot]&&currentSlot>0)currentSlot--;digits.fill('',currentSlot);updateDigits();slots[currentSlot].focus({preventScroll:true});}
 $('#eraseDigit').addEventListener('click',eraseDigit);
-$('#clearDate').addEventListener('click',()=>{digits=['','','',''];currentSlot=0;updateDigits();dateMessage('重新选一个，值得被记住的日子。');});
+$('#clearDate').addEventListener('click',()=>{digits=['','','',''];currentSlot=0;updateDigits();dateMessage(uiText('dateReset'));});
 $('#unlockDate').addEventListener('click',unlockDate);
 $('.date-game').addEventListener('keydown',e=>{
   if(e.ctrlKey||e.metaKey||e.altKey)return;
@@ -133,18 +139,18 @@ $('.date-game').addEventListener('keydown',e=>{
   else if(e.key==='Enter'&&e.target.classList.contains('date-slot')){e.preventDefault();unlockDate();}
 });
 $('#dateHint').addEventListener('click',()=>{
-  if(failedDateAttempts<2)return;
+  if(siteBehavior.hintAfterAttempts===0||failedDateAttempts<(siteBehavior.hintAfterAttempts??2))return;
   const remaining=memories.filter(m=>m.photos?.length&&!unlocked.has(m.date));
   const selectedMonth=digits.slice(0,2).join('');
   const inMonth=remaining.filter(m=>selectedMonth.length===2&&m.date.slice(0,2)===selectedMonth);
   const candidates=inMonth.length?inMonth:remaining;
-  if(!candidates.length){dateMessage('所有日期都已解锁，点开下面的相册，再看一遍吧。');return;}
+  if(!candidates.length){dateMessage(uiText('dateAllUnlocked'));return;}
   const next=candidates[(candidates.findIndex(m=>m.date===lastHintDate)+1)%candidates.length];lastHintDate=next.date;
-  dateMessage('按 '+hintYear+' 年的日历想一想：'+calendarHint(next.date));
+  dateMessage(uiText('dateCalendarLead',{year:hintYear})+calendarHint(next.date));
 });
 updateDigits();
 
-const quiz=Array.isArray(supplied.quiz)?supplied.quiz:[];
+const quiz=sectionEnabled('quiz')&&Array.isArray(supplied.quiz)?supplied.quiz:[];
 let questionIndex=0;let score=0;let answered=false;let quizStarted=false;
 // Image additions keep the same answer history as the original text options.
 const quizSignature=JSON.stringify(quiz.map(({explanation,explanationImages,...question})=>({...question,options:question.options.map(option=>option&&typeof option==='object'&&option.label?option.label:option)})));
@@ -193,7 +199,7 @@ function renderQuestion(){
     }
     return button;
   }));
-  if(q.pendingImages){answered=true;$('#quizFeedback').textContent='头像图片待补充，这题先跳过。';$('#nextQuestion').textContent=questionIndex===quiz.length-1?'看看结果 ↗':'跳过，下一题 ↗';$('#nextQuestion').hidden=false;}
+  if(q.pendingImages){answered=true;$('#quizFeedback').textContent=uiText('quizPendingImages');$('#nextQuestion').textContent=questionIndex===quiz.length-1?uiText('quizResultButton')+' ↗':uiText('quizSkip')+' ↗';$('#nextQuestion').hidden=false;}
   $('#questionText').focus();
 }
 function answerQuestion(index,restoring=false){
@@ -201,9 +207,9 @@ function answerQuestion(index,restoring=false){
   answered=true;const canScore=hasQuizAnswer(q);const correct=canScore?index===q.answer:null;if(correct&&!restoring)score++;
   quizAnswers[questionIndex]=index;if(!restoring)saveQuizProgress();
   [...$('#quizOptions').children].forEach((entry,i)=>{const button=entry.classList.contains('quiz-image-card')?entry.children[0]:entry;button.disabled=true;button.classList.toggle('correct',canScore&&i===q.answer);button.classList.toggle('wrong',canScore&&i===index&&!correct);button.classList.toggle('selected',!canScore&&i===index);});
-  $('#quizFeedback').textContent=canScore?(correct?'答对啦！':'这次的答案是 '+String.fromCharCode(65+q.answer)+'。'):'你选择了 '+String.fromCharCode(65+index)+'，答案待揭晓。';
+  $('#quizFeedback').textContent=canScore?(correct?uiText('quizCorrect'):uiText('quizWrong',{answer:String.fromCharCode(65+q.answer)})):uiText('quizPendingAnswer',{answer:String.fromCharCode(65+index)});
   renderQuizExplanation(q);
-  $('#nextQuestion').textContent=questionIndex===quiz.length-1?'看看结果 ↗':'下一题 ↗';$('#nextQuestion').hidden=false;
+  $('#nextQuestion').textContent=questionIndex===quiz.length-1?uiText('quizResultButton')+' ↗':uiText('quizNext')+' ↗';$('#nextQuestion').hidden=false;
   return {ok:true,correct,score};
 }
 $('#nextQuestion').addEventListener('click',()=>{
@@ -212,11 +218,11 @@ $('#nextQuestion').addEventListener('click',()=>{
   else showQuizResult();
   saveQuizProgress();
 });
-function showQuizResult(){quizComplete=true;clearQuizExplanation();const total=scoredQuizCount();$('#questionText').textContent=total?'答对了 '+score+' / '+total+' 题':'本轮问答已完成';$('#quizOptions').replaceChildren();$('#quizFeedback').textContent=(total<quiz.length?'图片或答案待补充的题目暂不计分。':'')+('谢谢你，陪我把这些瞬间再记了一遍。生日快乐，'+(supplied.recipient||'你')+'！');$('#nextQuestion').hidden=true;$('#retryQuiz').hidden=false;}
+function showQuizResult(){quizComplete=true;clearQuizExplanation();const total=scoredQuizCount();$('#questionText').textContent=total?uiText('quizScore',{score,total}):uiText('quizComplete');$('#quizOptions').replaceChildren();$('#quizFeedback').textContent=(total<quiz.length?uiText('quizPartial'):'')+(uiText('quizThanks'));$('#nextQuestion').hidden=true;$('#retryQuiz').hidden=false;}
 $('#retryQuiz').addEventListener('click',()=>{questionIndex=0;score=0;quizAnswers=[];quizComplete=false;saveQuizProgress();renderQuestion();});
-clearQuizExplanation();$('#quizSummary').textContent='共 '+quiz.length+' 道题，来试试我们的默契。';
+clearQuizExplanation();$('#quizSummary').textContent=uiText('quizSummary',{count:quiz.length});
 $('#quizWelcome').hidden=false;$('#quizPlay').hidden=true;
-if(savedQuiz){$('#startQuiz').textContent=savedQuiz.complete?'查看上次结果 ↗':'继续上次答题 ↗';$('#quizSummary').textContent='已保留这台设备上的答题进度。';}
+if(savedQuiz){$('#startQuiz').textContent=savedQuiz.complete?uiText('quizSavedResult')+' ↗':uiText('quizContinue')+' ↗';$('#quizSummary').textContent=uiText('quizSavedSummary');}
 $('#startQuiz').addEventListener('click',()=>{
   if(quizStarted)return;
   quizStarted=true;$('#quizWelcome').hidden=true;$('#quizPlay').hidden=false;

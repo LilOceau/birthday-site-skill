@@ -9,7 +9,7 @@
 .envelope-scene{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 36%;isolation:isolate;transform:rotate(-4deg);transform-origin:50% 60.5%}
 .suede{background-color:#cbd6dc;background-image:linear-gradient(137deg,#ffffff1a,#567d8106 52%,#466b740b);background-size:100% 100%;isolation:isolate}
 /* Neutralize the nap itself so its warm RGB does not yellow the paper or tint the blue. */
-.suede:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:url('assets/demo/paper.png') center/310px 310px repeat;filter:grayscale(1);mix-blend-mode:multiply;opacity:.5}
+.suede:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:var(--site-texture) center/310px 310px repeat;filter:grayscale(1);mix-blend-mode:multiply;opacity:.5}
 .shell-motion{position:absolute;left:8%;top:38%;width:84%;height:45%;transform:translateY(0);transform-origin:50% 50%;opacity:0}
 .envelope-rear{z-index:1;border-radius:3px;background:#bac9d0;box-shadow:1px 2px 0 #577a826b,0 3px 5px #214c5340,6px 18px 27px -9px #163d5059;}
 .envelope-lining{position:absolute;inset:0;border-radius:3px;box-shadow:inset 0 3px 9px #375f693d,inset 0 1px 0 #e7eef1b0;background-color:#b4c5cc}

@@ -1,11 +1,35 @@
 """Read-only birthday-site inventory; output must be outside the site."""
 import argparse
 import hashlib
+from html.parser import HTMLParser
 import json
 import pathlib
 import re
 import subprocess
 import urllib.parse
+
+
+def css_references(text):
+    pattern = r'''url\(\s*(?:"([^"]*)"|'([^']*)'|([^\s)]*))\s*\)'''
+    return [a or b or c for a,b,c in re.findall(pattern,text,re.I)]
+
+
+def html_references(text):
+    class References(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.references=[];self.in_style=False
+        def handle_starttag(self,tag,attrs):
+            if tag=='style':self.in_style=True
+            for key,value in attrs:
+                if key in ('src','href') and value:self.references.append(value)
+                if key=='style' and value:self.references.extend(css_references(value))
+        def handle_endtag(self,tag):
+            if tag=='style':self.in_style=False
+        def handle_data(self,data):
+            if self.in_style:self.references.extend(css_references(data))
+    parser=References();parser.feed(text);parser.close()
+    return parser.references
 
 
 def inspect(site):
@@ -35,9 +59,8 @@ def inspect(site):
             files[p.relative_to(dist).as_posix()]={'bytes':p.stat().st_size,'sha256':digest}
             if p.suffix.lower() in ('.html','.css'):
                 text=p.read_text(encoding='utf-8')
-                found=re.findall(r'''(?:src|href)\s*=\s*["']([^"']+)["']|url\(\s*["']?([^\s)"']+)''',text,re.I)
-                for a,b in found:
-                    ref=a or b
+                found=html_references(text) if p.suffix.lower()=='.html' else css_references(text)
+                for ref in found:
                     if not ref.startswith(('#','data:')):
                         references.add(urllib.parse.urljoin(p.relative_to(dist).as_posix(),ref))
     missing, external, invalid = [], [], []

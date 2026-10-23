@@ -31,7 +31,7 @@
 #chapters .dates-intro { position: relative; padding: 6px 0 112px; min-width: 0; }
 #chapters .dates-intro::after {
   content: ""; position: absolute; width: 105px; height: 96px; bottom: 0; left: 0;
-  background: url('assets/demo/botanical.svg') center / contain no-repeat;
+  background: var(--site-motif) center / contain no-repeat;
   opacity: .72; pointer-events: none;
 }
 #chapters .dates-intro h2 { text-shadow: 0 1px #ffffffb3; }

@@ -36,12 +36,13 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 
 安装器只需安装 skill 子目录，完整工程已包含在里面。有旧版本时先保留本地修改，再更新整个目录。已有私人站点继续走维护流程，不要用模板覆盖旧工程。
 
-## 版本 0.2.1 包含什么
+## 版本 0.3.0 包含什么
 
 | 能力 | 实现与入口 |
 | --- | --- |
 | 创建独立工程 | scripts/create_project.py；新目录保护、独立浏览进度 ID |
 | 内容配置 | 三份 JSON Schema、数据格式规范 v1、只读校验；build.py 生成网页内容 |
+| 网站配置 | 配色、装饰素材、栏目开关、页面文案、进度保存、Live 自动播放与日期提示 |
 | 完整前端 | 信封动画、日期相册、Live/普通视频、缩放、拼贴翻页与总览、图片问答 |
 | 媒体导入 | 按日期增量导入、编号校验、原件哈希、H.264 视频流保留、备份与清单 |
 | 本地预览 | Python 标准库服务，支持视频 Range 请求 |
@@ -56,6 +57,12 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 三份配置的字段、日期、资源路径、媒体类型、答案索引和导入编号见 [数据格式规范 v1](birthday-site-workflow/assets/project/docs/content-model.md)。[schemas/](birthday-site-workflow/assets/project/schemas/) 提供编辑器可用的 Draft 2020-12 Schema，附带 JSON 即为完整虚构示例。新旧示例均可校验；不声明 schemaVersion 时按 v1 解释。
 
 在工程目录运行 `python validate_data.py`，即可只读检查三份配置及资源引用，不需要额外安装依赖。
+
+## 更完整的网站配置
+
+在 site.json 调整 `theme`、`assets`、`sections`、`behavior`、`labels`，即可更换主要配色、背景与装饰素材、选择栏目、修改常用文案及浏览行为。每组都支持部分覆盖，旧配置继续使用默认值。
+
+见 [配置指南](birthday-site-workflow/assets/project/docs/customization.md) 和 [暖色主题示例](birthday-site-workflow/assets/project/site.custom.example.json)。栏目关闭不会删除数据，关闭进度保存不会读取或删除浏览器旧记录；系统减少动态效果偏好仍被尊重。
 
 ## 替换自己的内容
 
@@ -99,6 +106,7 @@ python -m unittest discover -s tests -v
 npm ci
 npx playwright install chromium
 npm run test:browser
+npm run test:configuration
 python export.py release/birthday-site.zip
 ```
 

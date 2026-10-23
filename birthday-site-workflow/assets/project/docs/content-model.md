@@ -60,6 +60,8 @@ Schema 能验证结构、类型、长度、日期格式和取值范围；文件�
 
 日期是无年份的月日，必须补零，允许 `02/29`，不允许 `02/30`、`04/31`；闰日按可存在的年历日期校验，不与 site.year 绑定。
 
+site.json 还支持可选的 `theme`、`assets`、`sections`、`behavior`、`labels`。完整默认值、部分覆盖、文案占位符和行为边界见 [网站配置指南](customization.md)。新增字段沿用 schemaVersion 1；旧配置省略这些组时保持默认行为。
+
 ## content.json
 
 `memories`、`collage`、`quiz` 三个数组均必填，允许空数组。顺序有意义：手动编辑按数组顺序呈现；照片导入后，相册按 `MM/DD` 升序，照片按来源编号升序。问答始终保持现有数组顺序。

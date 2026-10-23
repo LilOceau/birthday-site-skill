@@ -1,21 +1,22 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="{{THEME_STYLE}}">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#7295a7">
+  <meta name="theme-color" content="{{THEME_ACCENT}}">
   <meta name="description" content="{{DESCRIPTION}}">
-  <title>{{TITLE}} · 生日邀请函</title>
+  <title>{{TITLE}} · {{LABEL_pageSuffix}}</title>
   <link rel="stylesheet" href="style.css?v={{VERSION}}">
   <link rel="stylesheet" href="opening.css?v={{VERSION}}">
   <link rel="stylesheet" href="album.css?v={{VERSION}}">
   <link rel="stylesheet" href="chapters.css?v={{VERSION}}">
+  <link rel="stylesheet" href="config.css?v={{VERSION}}">
   <script src="content.js?v={{VERSION}}" defer></script><script src="app.js?v={{VERSION}}" defer></script><script src="live-cache.js?v={{VERSION}}" defer></script><script src="viewer.js?v={{VERSION}}" defer></script><script src="opening.js?v={{VERSION}}" defer></script>
 </head>
 <body>
   <main>
     <section id="invitation" class="invitation" data-phase="loading" aria-label="生日邀请函">
-      <div class="sea" aria-hidden="true"><img id="seaImage" src="assets/demo/sea.png" sizes="(min-aspect-ratio: 16/9) 100vw, 177.78vh" width="3840" height="2160" alt="" fetchpriority="high" decoding="async"></div>
-      <header class="opening-header"><span>FOR {{RECIPIENT}}</span><span>WITH LOVE, ALWAYS</span></header>
+      <div class="sea" aria-hidden="true"><img id="seaImage" src="{{ASSET_BACKGROUND}}" sizes="(min-aspect-ratio: 16/9) 100vw, 177.78vh" width="3840" height="2160" alt="" fetchpriority="high" decoding="async"></div>
+      <header class="opening-header"><span>FOR {{RECIPIENT}}</span><span>{{LABEL_headerRight}}</span></header>
       <div class="cinema-frame">
         <div class="envelope-scene" id="envelopeScene">
           <div class="envelope-rear shell-motion" aria-hidden="true"><div class="envelope-lining suede"></div></div>
@@ -25,55 +26,55 @@
             <div class="letter-print debossed">
               <h1><span class="print-line" data-print="title">{{TITLE}}</span></h1>
               <p class="coconut"><strong class="print-line" data-print="subtitle">{{LETTER_LINE}}</strong><span class="print-line" data-print="description">{{LETTER_DESCRIPTION}}</span></p>
-              <div class="letter-middle"><span><span class="print-line" data-print="left1">A SEAT</span><span class="print-line" data-print="left2">IN OUR</span></span><span><span class="print-line" data-print="right1">SUMMER</span><span class="print-line" data-print="right2">STORY</span></span></div>
-              <img class="embroidered-palms" id="embroideredPalms" src="assets/demo/botanical.svg" alt="青绿色枝叶图案" width="1024" height="1024">
-              <div class="letter-end"><p><span class="print-line" data-print="chinese1">{{RECIPIENT}}</span><span class="print-line" data-print="chinese2">生日</span><span class="print-line" data-print="chinese3">邀请函</span></p><b><span class="print-line" data-print="year">{{YEAR}}</span><span class="print-line" data-print="invitation">INVITATION</span></b></div>
+              <div class="letter-middle"><span><span class="print-line" data-print="left1">{{LABEL_letterLeftTop}}</span><span class="print-line" data-print="left2">{{LABEL_letterLeftBottom}}</span></span><span><span class="print-line" data-print="right1">{{LABEL_letterRightTop}}</span><span class="print-line" data-print="right2">{{LABEL_letterRightBottom}}</span></span></div>
+              <img class="embroidered-palms" id="embroideredPalms" src="{{ASSET_MOTIF}}" alt="{{MOTIF_ALT}}" width="1024" height="1024">
+              <div class="letter-end"><p><span class="print-line" data-print="chinese1">{{RECIPIENT}}</span><span class="print-line" data-print="chinese2">{{LABEL_birthdayLabel}}</span><span class="print-line" data-print="chinese3">{{LABEL_invitationLabel}}</span></p><b><span class="print-line" data-print="year">{{YEAR}}</span><span class="print-line" data-print="invitation">{{LABEL_invitationEnglish}}</span></b></div>
             </div>
           </article>
           </div>
           </div>
           <div class="envelope-front shell-motion" aria-hidden="true"><div class="pocket-shadow"><div class="envelope-pocket suede"><div class="fold fold-left"></div><div class="fold fold-right"></div></div></div></div>
-          <div class="envelope-flap-motion shell-motion" aria-hidden="true"><div class="envelope-flap" id="flapHinge"><div class="flap-face flap-front"><div class="flap-material suede"></div><div class="envelope-title debossed"><span>Happy</span><span>birthday</span></div></div><div class="flap-face flap-inside"><div class="flap-material suede"></div></div></div></div>
+          <div class="envelope-flap-motion shell-motion" aria-hidden="true"><div class="envelope-flap" id="flapHinge"><div class="flap-face flap-front"><div class="flap-material suede"></div><div class="envelope-title debossed"><span>{{LABEL_envelopeTop}}</span><span>{{LABEL_envelopeBottom}}</span></div></div><div class="flap-face flap-inside"><div class="flap-material suede"></div></div></div></div>
           <button id="openEnvelope" class="envelope-hit" aria-label="打开生日信封" disabled></button>
         </div>
       </div>
-      <div class="opening-actions"><p id="openingHint" role="status">海风捎来了一封信</p><button id="enterMemories" class="light-button" hidden>走进这一年 <span aria-hidden="true">↗</span></button></div>
-      <button class="replay" id="replay" hidden>重读这封信</button>
+      <div class="opening-actions"><p id="openingHint" role="status">{{LABEL_openingLoading}}</p><button id="enterMemories" class="light-button" hidden>{{LABEL_enterButton}} <span aria-hidden="true">↗</span></button></div>
+      <button class="replay" id="replay" hidden>{{LABEL_replayButton}}</button>
     </section>
-    <div id="chapters" hidden>
-      <nav class="chapter-nav" aria-label="生日回忆导航"><a class="wordmark" href="#invitation">{{TITLE}}</a><div><a href="#dates">日期照片</a><a href="#collage">拼贴照片</a><a href="#quiz">趣味问答</a></div></nav>
-      <section id="dates" class="dates-section section-wrap">
-        <div class="dates-intro"><span class="handwritten">Remember the day?</span><h2>把日子拼起来，<br>让回忆显影。</h2><p>选取四个数字组成正确日期即可解锁当日回忆</p><div id="memoryWelcome" class="memory-welcome" hidden><button id="startMemory" type="button">带我看一段回忆 <span aria-hidden="true">↗</span></button></div><p class="draft-note" id="dateNote">那些值得被记住的日子，等你逐一开启。</p><div class="album-count"><strong id="unlockedCount">0</strong><span>段回忆已解锁</span></div></div>
+    <div id="chapters" hidden tabindex="-1">
+      <nav class="chapter-nav" aria-label="生日回忆导航"><a class="wordmark" href="#invitation">{{TITLE}}</a><div><a href="#dates" {{VISIBLE_dates}}>{{LABEL_navDates}}</a><a href="#collage" {{VISIBLE_collage}}>{{LABEL_navCollage}}</a><a href="#quiz" {{VISIBLE_quiz}}>{{LABEL_navQuiz}}</a></div></nav>
+      <section {{VISIBLE_dates}} id="dates" class="dates-section section-wrap">
+        <div class="dates-intro"><span class="handwritten">{{LABEL_datesEyebrow}}</span><h2>{{LABEL_datesTitle}}</h2><p>{{LABEL_datesDescription}}</p><div id="memoryWelcome" class="memory-welcome" hidden><button id="startMemory" type="button">{{LABEL_welcomeButton}} <span aria-hidden="true">↗</span></button></div><p class="draft-note" id="dateNote">那些值得被记住的日子，等你逐一开启。</p><div class="album-count"><strong id="unlockedCount">0</strong><span>{{LABEL_unlockedLabel}}</span></div></div>
         <div class="date-game" aria-label="拼出照片日期">
           <div class="date-entry" role="group" aria-label="日期，格式为月月斜线日日"><button class="date-slot active" data-slot="0" aria-label="月份十位，未填写">_</button><button class="date-slot" data-slot="1" aria-label="月份个位，未填写">_</button><span class="date-slash" aria-hidden="true">/</span><button class="date-slot" data-slot="2" aria-label="日期十位，未填写">_</button><button class="date-slot" data-slot="3" aria-label="日期个位，未填写">_</button></div>
           <p class="date-format">月 / 日 <span id="digitHint" aria-live="polite">先选月份首位</span></p>
           <div id="numberPool" class="number-pool" role="group" aria-label="月份首位的可选数字"></div>
-          <div class="date-controls"><button id="shuffleDigits" class="text-button">重新散落</button><button id="eraseDigit" class="text-button">退一格</button><button id="clearDate" class="text-button">清空</button><button id="dateHint" class="text-button" hidden>给我提示</button></div>
-          <button id="unlockDate" class="primary-button" disabled>解锁这一天 <span aria-hidden="true">↗</span></button>
+          <div class="date-controls"><button id="shuffleDigits" class="text-button">重新散落</button><button id="eraseDigit" class="text-button">退一格</button><button id="clearDate" class="text-button">清空</button><button id="dateHint" class="text-button" hidden>{{LABEL_hintButton}}</button></div>
+          <button id="unlockDate" class="primary-button" disabled>{{LABEL_unlockButton}} <span aria-hidden="true">↗</span></button>
           <p id="dateMessage" class="message" role="status"></p>
         </div>
         <div id="unlockedAlbums" class="unlocked-albums" aria-label="已解锁的照片"></div>
       </section>
-      <section id="collage" class="collage-section section-wrap">
-        <div class="collage-title"><span class="handwritten">Pieces of you</span><h2>关于你的，<br>每一小片。</h2><p>把喜欢的瞬间，<br>拼成一张独一无二的你。</p><p class="draft-note" id="collageNote">左右滑动，或点击左右键翻看。<br>轻触照片，放大看细节。</p></div>
+      <section {{VISIBLE_collage}} id="collage" class="collage-section section-wrap">
+        <div class="collage-title"><span class="handwritten">{{LABEL_collageEyebrow}}</span><h2>{{LABEL_collageTitle}}</h2><p>{{LABEL_collageDescription}}</p><p class="draft-note" id="collageNote">{{LABEL_collageHelp}}</p></div>
         <div class="collage-board" id="collageBoard" role="region" aria-roledescription="轮播图" aria-label="拼贴照片" tabindex="0">
           <span id="collageHeightLimit" aria-hidden="true"></span>
           <button id="viewCollage" class="collage-cover" aria-label="放大查看当前拼贴照片"><img id="collageImage" src="{{COLLAGE_COVER}}" alt="拼贴照片 01" loading="lazy" draggable="false"></button>
           <span id="collageStatus" class="corner-status" role="status" hidden></span><button id="retryCollage" class="text-button" hidden>重试</button><div class="collage-controls"><button id="previousCollage" aria-label="上一张拼贴照片" disabled>←</button><span id="collageCounter" aria-live="polite" aria-atomic="true"></span><button id="nextCollage" aria-label="下一张拼贴照片">→</button></div>
         </div>
         <div class="collage-overview-wrap">
-          <div class="collage-overview-bar"><button id="toggleCollageOverview" class="text-button" aria-expanded="false" aria-controls="collageOverview">查看全部拼贴</button><span id="progressNote">浏览进度保存在当前浏览器</span></div>
-          <div id="collageOverview" hidden><p class="draft-note">按原有编号排列，轻触任意一张放大查看。</p><div id="collageGrid" class="collage-grid" role="group" aria-label="全部拼贴照片，按数字顺序排列"></div></div>
+          <div class="collage-overview-bar"><button id="toggleCollageOverview" class="text-button" aria-expanded="false" aria-controls="collageOverview">{{LABEL_overviewOpen}}</button><span id="progressNote">{{LABEL_progressSaved}}</span></div>
+          <div id="collageOverview" hidden><p class="draft-note">{{LABEL_overviewNote}}</p><div id="collageGrid" class="collage-grid" role="group" aria-label="全部拼贴照片，按数字顺序排列"></div></div>
         </div>
       </section>
-      <section id="quiz" class="quiz-section section-wrap">
-        <div class="quiz-intro"><span class="handwritten">How well do you remember?</span><h2>这道题，<br>你一定知道。</h2></div>
+      <section {{VISIBLE_quiz}} id="quiz" class="quiz-section section-wrap">
+        <div class="quiz-intro"><span class="handwritten">{{LABEL_quizEyebrow}}</span><h2>{{LABEL_quizTitle}}</h2></div>
         <div class="quiz-paper">
-          <div id="quizWelcome" class="quiz-welcome"><div class="quiz-meta"><span>默契小测验</span></div><h3>关于{{RECIPIENT}}，你了解多少？</h3><p id="quizSummary">准备好了吗？来试试我们的默契。</p><button id="startQuiz" class="primary-button">开始答题 <span aria-hidden="true">↗</span></button></div>
-          <div id="quizPlay" class="quiz-play" hidden><div class="quiz-meta"><span>默契小测验</span><span id="questionCount">01 / 01</span></div><h3 id="questionText" tabindex="-1"></h3><div id="quizOptions" class="quiz-options" role="group" aria-label="选择一个答案"></div><p id="quizFeedback" class="message" role="status"></p><section id="quizExplanation" class="quiz-explanation" aria-label="答案解析" hidden><h4>答案解析</h4><p id="quizExplanationText"></p><div id="quizExplanationImages" class="quiz-explanation-images"></div></section><button id="nextQuestion" class="primary-button" hidden>看看结果 <span aria-hidden="true">↗</span></button><button id="retryQuiz" class="text-button" hidden>再玩一次</button></div>
+          <div id="quizWelcome" class="quiz-welcome"><div class="quiz-meta"><span>{{LABEL_quizLabel}}</span></div><h3>{{LABEL_quizWelcome}}</h3><p id="quizSummary">准备好了吗？来试试我们的默契。</p><button id="startQuiz" class="primary-button">{{LABEL_quizStart}} <span aria-hidden="true">↗</span></button></div>
+          <div id="quizPlay" class="quiz-play" hidden><div class="quiz-meta"><span>{{LABEL_quizLabel}}</span><span id="questionCount">01 / 01</span></div><h3 id="questionText" tabindex="-1"></h3><div id="quizOptions" class="quiz-options" role="group" aria-label="选择一个答案"></div><p id="quizFeedback" class="message" role="status"></p><section id="quizExplanation" class="quiz-explanation" aria-label="答案解析" hidden><h4>答案解析</h4><p id="quizExplanationText"></p><div id="quizExplanationImages" class="quiz-explanation-images"></div></section><button id="nextQuestion" class="primary-button" hidden>{{LABEL_quizResultButton}} <span aria-hidden="true">↗</span></button><button id="retryQuiz" class="text-button" hidden>{{LABEL_quizRetry}}</button></div>
         </div>
       </section>
-      <footer><p>Happy birthday.</p><a href="#invitation">回到这封信</a></footer>
+      <footer><p>{{LABEL_footerMessage}}</p><a href="#invitation">{{LABEL_backToLetter}}</a></footer>
     </div>
     <dialog id="photoDialog" class="photo-dialog" aria-labelledby="viewerTitle">
       <div class="viewer-bar"><div><span id="viewerTitle"></span><small id="mediaType"></small></div><button id="closeViewer" aria-label="关闭图片，返回原页面" autofocus>×</button></div>

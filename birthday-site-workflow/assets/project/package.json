@@ -1,9 +1,16 @@
 {
   "name": "birthday-site-starter",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "Portable static birthday site; Node is only needed for browser QA",
-  "scripts": {"test:browser": "node tests/browser.cjs"},
-  "devDependencies": {"playwright": "1.62.1"},
-  "engines": {"node": ">=22"}
+  "scripts": {
+    "test:browser": "node tests/browser.cjs",
+    "test:configuration": "node tests/configuration.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }

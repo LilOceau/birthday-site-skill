@@ -1,0 +1,17 @@
+/* User-facing palette and shared decorative assets. Geometry stays in existing CSS. */
+:root { --ink: var(--site-ink); --blue: var(--site-accent); --paper: var(--site-paper); background: var(--site-background); }
+#chapters { --sheet: var(--site-paper); --cloth: var(--site-envelope); background: var(--site-background); }
+#chapters .chapter-nav, #chapters .quiz-explanation-image { background-color: var(--site-paper); }
+#chapters .primary-button { background-color: var(--site-ink); }
+#chapters .primary-button:hover:not(:disabled) { filter: brightness(.9); }
+#chapters .handwritten, #chapters > footer p { color: var(--site-ink); }
+.suede, .envelope-pocket { background-color: var(--site-envelope); }
+.envelope-rear, .envelope-lining { background-color: var(--site-envelope); }
+.flap-material, .flap-inside .flap-material { background-color: var(--site-envelope); }
+.letter { background-color: var(--site-paper); }
+.debossed, .letter-print, .envelope-title.debossed { color: var(--site-ink); }
+.suede:before { background-image: var(--site-texture); }
+#chapters .dates-intro::after { background-image: var(--site-motif); }
+.section-wrap h2, .section-wrap p, footer p { overflow-wrap: anywhere; }
+.chapter-nav > div { flex-wrap: wrap; row-gap: 6px; }
+.chapter-nav a { overflow-wrap: anywhere; }

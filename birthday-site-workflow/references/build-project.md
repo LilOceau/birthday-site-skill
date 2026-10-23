@@ -12,6 +12,8 @@ python <skill目录>/scripts/create_project.py <新目录> --recipient 小夏 --
 
 新工程以 site.json/content.json 为内容来源，build.py 生成 dist/index.html 和 dist/content.js。不要直接修改生成文件后期待下一次构建保留。dist 中其余源码和媒体仍需保留。
 
+主题、装饰素材、栏目开关、常用文案及浏览行为按 [网站配置指南](../assets/project/docs/customization.md) 在 site.json 配置；使用部分覆盖，不改动 content.json 的素材和问答。配置变更要运行 `npm run test:configuration`，并预览实际文案、配色与栏目组合。
+
 新工程照片导入必须带 --date，不存在全量重建或 --live-only 选项；输出到 assets/imported/，证据保存在 manifests/，修改前副本在 .backups/。原有项目可能使用不同脚本、目录和清单：不要将新模板覆盖到旧工程上。旧工程遵循 content-workflow.md，并先核对实际实现。
 
 ## 完成交付的证据

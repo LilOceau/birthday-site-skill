@@ -49,7 +49,7 @@ class InvitationPlayer {
   }
   invalidate(){this.serial++;this.animations.forEach(a=>a.cancel());this.animations=[];}
   async loadAssets(){
-    const texture=new Image();texture.src='assets/demo/paper.png';
+    const texture=new Image();texture.src=siteConfig.assets.texture;
     // Decode the same responsive image selected by the browser and preload.
     const ocean=this.root.querySelector('#seaImage');
     const jobs=[texture.decode?.(),ocean.decode?.(),this.palms.decode?.(),document.fonts?.ready];
@@ -76,7 +76,7 @@ class InvitationPlayer {
     this.invalidate();const token=this.serial;
     this.setPhase('loading');this.openButton.disabled=true;
     this.letter.setAttribute('aria-hidden','true');this.enterButton.hidden=true;this.replayButton.hidden=true;
-    this.hint.hidden=false;this.hint.textContent='海风捎来了一封信';
+    this.hint.hidden=false;this.hint.textContent=uiText('openingLoading');
     await this.assetsReady;
     if(token!==this.serial)return;
     if(this.motionPreference.matches||!this.letter.animate){this.finishArrival(focusOnReady);return;}
@@ -92,7 +92,7 @@ class InvitationPlayer {
   }
   finishArrival(focus=false){
     this.setPhase('ready');this.animations.forEach(a=>a.cancel());this.animations=[];
-    this.openButton.disabled=false;this.hint.hidden=false;this.hint.textContent='轻触信封，打开这份生日邀请';
+    this.openButton.disabled=false;this.hint.hidden=false;this.hint.textContent=uiText('openingReady');
     if(focus)this.openButton.focus({preventScroll:true});
   }
   openingTracks(){
@@ -157,20 +157,20 @@ class InvitationPlayer {
     this.openButton.disabled=true;this.letter.setAttribute('aria-hidden','false');
     this.hint.hidden=true;this.enterButton.hidden=false;this.replayButton.hidden=false;
     // Announce once, after printing; never read out characters as they appear.
-    this.hint.textContent='生日邀请函已展开';
+    this.hint.textContent=uiText('openingOpened');
   }
 }
-window.birthdayOpening=new InvitationPlayer(document.querySelector('#invitation'));
+window.birthdayOpening=new InvitationPlayer(document.querySelector('#invitation'),siteBehavior.openingMotion==='reduced'?{reducedMotion:{matches:true}}:{});
 // Use the existing opening, without adding a mandatory waiting screen.
 window.birthdayOpening.assetsReady.then(()=>{
-  if(!window.LiveMediaCache)return;
+  if(!window.LiveMediaCache||siteBehavior.backgroundPreload===false)return;
   if(!dialog.open){
     const album=memories.find(m=>m.date===progress.lastAlbum&&unlocked.has(m.date))||memories.find(m=>m.date===supplied.welcomeDate);
     if(album){
       const index=savedPhotoIndex(album.date,album.photos);
-      window.LiveMediaCache.warm(album.photos.slice(index).filter(p=>p.type==='live').slice(0,3),{live:!reduceMotion});
+      window.LiveMediaCache.warm(album.photos.slice(index).filter(p=>p.type==='live').slice(0,3),{live:siteBehavior.liveAutoplay!==false&&!reduceMotion});
     }
   }
   // Keep warming the remaining resources while the visitor reads or interacts.
-  window.LiveMediaCache.start(memories.flatMap(m=>m.photos).concat(collages),{live:!reduceMotion});
+  window.LiveMediaCache.start(memories.flatMap(m=>m.photos).concat(collages),{live:siteBehavior.liveAutoplay!==false&&!reduceMotion});
 });

@@ -227,7 +227,7 @@ function renderPhoto(){
   if(photo.type==='video')loadViewerVideo(photo,ready);
   else if(photo.type==='live')loadViewerImage(photo.poster||photo.thumb,{onReady(){
     clearLivePlayback();ready();
-    if(!reduceMotion&&!document.hidden)startLivePhoto(photo);
+    if(siteBehavior.liveAutoplay!==false&&!reduceMotion&&!document.hidden)startLivePhoto(photo);
   }});
   else loadViewerImage(photo.type==='live'?photo.poster||photo.thumb:photo.preview||photo.src,{onReady(){clearLivePlayback();ready();}});
 }
@@ -360,7 +360,7 @@ stage.addEventListener('dblclick',e=>{if((e.target===viewerVideo&&visiblePhoto()
 stage.addEventListener('wheel',e=>{if(e.ctrlKey&&visiblePhoto()?.type!=='video'){e.preventDefault();setZoom(zoom*Math.exp(-e.deltaY/250),e.clientX,e.clientY);}},{passive:false});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){pointers.clear();gesture=null;viewerVideo.pause();if(liveMotionEnabled&&photoIndex===displayedIndex)pauseLivePhoto();}});
 
-const collages=Array.isArray(supplied.collage)?supplied.collage:[];
+const collages=sectionEnabled('collage')&&Array.isArray(supplied.collage)?supplied.collage:[];
 let collageIndex=savedPhotoIndex('collage',collages),displayedCollageIndex=-1,collageRender=0,collageTimer=null,collageTimeout=null,collageTouch=null,suppressCollageClick=false;
 let collageResizeFrame=null,collageSize=null;
 function fitCollage(piece,animate=false){
@@ -384,23 +384,24 @@ function fitCollage(piece,animate=false){
 function markCollage(index){
   [...$('#collageGrid').children].forEach((button,i)=>button.setAttribute('aria-current',String(i===index)));
 }
-$('#toggleCollageOverview').textContent=`查看全部 ${collages.length} 张`;
+$('#toggleCollageOverview').textContent=uiText('overviewOpen',{count:collages.length});
 $('#collageGrid').replaceChildren(...collages.map((piece,index)=>{
   const button=document.createElement('button');button.type='button';button.className='collage-thumbnail';
   button.setAttribute('aria-label',`查看拼贴 ${String(index+1).padStart(2,'0')}：${piece.caption||''}`);button.setAttribute('aria-current','false');
   const image=new Image();image.src=piece.thumb||piece.preview;image.alt='';image.loading='lazy';image.decoding='async';image.width=piece.width;image.height=piece.height;
   const label=document.createElement('span');label.textContent=String(index+1).padStart(2,'0');button.append(image,label);
-  button.addEventListener('click',()=>openAlbum({title:'关于你的，每一小片',photos:collages,progressKey:'collage'},index));return button;
+  button.addEventListener('click',()=>openAlbum({title:uiText('collageTitle').replace(/\n/g,''),photos:collages,progressKey:'collage'},index));return button;
 }));
 $('#toggleCollageOverview').addEventListener('click',()=>{
   const expanded=$('#collageOverview').hidden;$('#collageOverview').hidden=!expanded;
   $('#toggleCollageOverview').setAttribute('aria-expanded',String(expanded));
-  $('#toggleCollageOverview').textContent=expanded?'收起拼贴总览':`查看全部 ${collages.length} 张`;
+  $('#toggleCollageOverview').textContent=expanded?uiText('overviewClose'):uiText('overviewOpen',{count:collages.length});
 });
 const collageObserver=new ResizeObserver(()=>fitCollage(collages[displayedCollageIndex>=0?displayedCollageIndex:collageIndex]));
 collageObserver.observe($('#collageBoard'));
 window.addEventListener('resize',()=>{collageSize=null;fitCollage(collages[displayedCollageIndex>=0?displayedCollageIndex:collageIndex]);});
-if(!saveProgress())$('#progressNote').textContent='当前浏览器暂无法保存进度，本次浏览不受影响';
+if(siteBehavior.persistProgress===false)$('#progressNote').textContent=uiText('progressSession');
+else if(!saveProgress())$('#progressNote').textContent=uiText('progressUnavailable');
 function renderCollage(){
   const index=collageIndex,piece=collages[index];if(!piece)return;
   const render=++collageRender,image=new Image();image.decoding='async';image.draggable=false;
@@ -424,7 +425,7 @@ function renderCollage(){
 }
 function moveCollage(delta){const next=collageIndex+delta;if(next<0||next>=collages.length)return;collageIndex=next;renderCollage();}
 $('#previousCollage').addEventListener('click',()=>moveCollage(-1));$('#nextCollage').addEventListener('click',()=>moveCollage(1));
-$('#viewCollage').addEventListener('click',e=>{if(suppressCollageClick){e.preventDefault();return;}if(displayedCollageIndex>=0)openAlbum({title:'关于你的，每一小片',photos:collages,progressKey:'collage'},displayedCollageIndex);});
+$('#viewCollage').addEventListener('click',e=>{if(suppressCollageClick){e.preventDefault();return;}if(displayedCollageIndex>=0)openAlbum({title:uiText('collageTitle').replace(/\n/g,''),photos:collages,progressKey:'collage'},displayedCollageIndex);});
 $('#collageBoard').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();moveCollage(e.key==='ArrowLeft'?-1:1);}});
 $('#viewCollage').addEventListener('touchstart',e=>{suppressCollageClick=false;collageTouch=e.touches.length===1?{x:e.touches[0].clientX,y:e.touches[0].clientY}:null;},{passive:true});
 $('#viewCollage').addEventListener('touchend',e=>{if(!collageTouch)return;const dx=e.changedTouches[0].clientX-collageTouch.x,dy=e.changedTouches[0].clientY-collageTouch.y;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.25){suppressCollageClick=true;moveCollage(dx<0?1:-1);setTimeout(()=>{suppressCollageClick=false;},400);}collageTouch=null;},{passive:true});

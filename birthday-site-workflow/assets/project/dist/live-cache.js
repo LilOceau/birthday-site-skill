@@ -6,7 +6,7 @@ window.LiveMediaCache=(()=>{
   let near=new Set(),bytes=0,running=0,scheduled=false,cooldown=0,wakeTimer=null;
   const isLive=src=>/\.live\.mp4(?:[?#]|$)/.test(src);
   const url=src=>isLive(src)?src+(src.includes('?')?'&':'?')+'liveVersion='+version:src;
-  const canWarm=()=>!document.hidden&&navigator.onLine!==false&&!navigator.connection?.saveData&&!busy.size&&Date.now()>=cooldown;
+  const canWarm=()=>window.BIRTHDAY_CONTENT?.config?.behavior?.backgroundPreload!==false&&!document.hidden&&navigator.onLine!==false&&!navigator.connection?.saveData&&!busy.size&&Date.now()>=cooldown;
   const abortError=()=>new DOMException('Cancelled','AbortError');
   function assets(photos,live=true){
     const clips=live?photos.filter(p=>p.type==='live').map(p=>p.src):[];

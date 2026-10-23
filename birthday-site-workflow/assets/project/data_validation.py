@@ -84,6 +84,8 @@ def validate_site(site):
     integer(site['year'], 'site.year', 1900, 2200)
     if site.get('welcomeDate') is not None:
         string(site['welcomeDate'], 'site.welcomeDate', pattern=DATE_PATTERN)
+    from configuration import validate_options
+    validate_options(site)
 
 
 def validate_content(content):

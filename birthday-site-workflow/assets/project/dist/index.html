@@ -1,15 +1,16 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="--site-background:#e7eeed;--site-ink:#315f69;--site-accent:#7295a7;--site-paper:#f4f3ef;--site-envelope:#cbd6dc;--site-motif:url(&quot;assets/demo/botanical.svg&quot;);--site-texture:url(&quot;assets/demo/paper.png&quot;)">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#7295a7">
   <meta name="description" content="一封生日来信，和那些值得收藏的日子。">
   <title>A day for you · 生日邀请函</title>
-  <link rel="stylesheet" href="style.css?v=dd0facea9048acaa">
-  <link rel="stylesheet" href="opening.css?v=dd0facea9048acaa">
-  <link rel="stylesheet" href="album.css?v=dd0facea9048acaa">
-  <link rel="stylesheet" href="chapters.css?v=dd0facea9048acaa">
-  <script src="content.js?v=dd0facea9048acaa" defer></script><script src="app.js?v=dd0facea9048acaa" defer></script><script src="live-cache.js?v=dd0facea9048acaa" defer></script><script src="viewer.js?v=dd0facea9048acaa" defer></script><script src="opening.js?v=dd0facea9048acaa" defer></script>
+  <link rel="stylesheet" href="style.css?v=4bef5ad7aa5ab378">
+  <link rel="stylesheet" href="opening.css?v=4bef5ad7aa5ab378">
+  <link rel="stylesheet" href="album.css?v=4bef5ad7aa5ab378">
+  <link rel="stylesheet" href="chapters.css?v=4bef5ad7aa5ab378">
+  <link rel="stylesheet" href="config.css?v=4bef5ad7aa5ab378">
+  <script src="content.js?v=4bef5ad7aa5ab378" defer></script><script src="app.js?v=4bef5ad7aa5ab378" defer></script><script src="live-cache.js?v=4bef5ad7aa5ab378" defer></script><script src="viewer.js?v=4bef5ad7aa5ab378" defer></script><script src="opening.js?v=4bef5ad7aa5ab378" defer></script>
 </head>
 <body>
   <main>
@@ -40,9 +41,9 @@
       <div class="opening-actions"><p id="openingHint" role="status">海风捎来了一封信</p><button id="enterMemories" class="light-button" hidden>走进这一年 <span aria-hidden="true">↗</span></button></div>
       <button class="replay" id="replay" hidden>重读这封信</button>
     </section>
-    <div id="chapters" hidden>
-      <nav class="chapter-nav" aria-label="生日回忆导航"><a class="wordmark" href="#invitation">A day for you</a><div><a href="#dates">日期照片</a><a href="#collage">拼贴照片</a><a href="#quiz">趣味问答</a></div></nav>
-      <section id="dates" class="dates-section section-wrap">
+    <div id="chapters" hidden tabindex="-1">
+      <nav class="chapter-nav" aria-label="生日回忆导航"><a class="wordmark" href="#invitation">A day for you</a><div><a href="#dates" >日期照片</a><a href="#collage" >拼贴照片</a><a href="#quiz" >趣味问答</a></div></nav>
+      <section  id="dates" class="dates-section section-wrap">
         <div class="dates-intro"><span class="handwritten">Remember the day?</span><h2>把日子拼起来，<br>让回忆显影。</h2><p>选取四个数字组成正确日期即可解锁当日回忆</p><div id="memoryWelcome" class="memory-welcome" hidden><button id="startMemory" type="button">带我看一段回忆 <span aria-hidden="true">↗</span></button></div><p class="draft-note" id="dateNote">那些值得被记住的日子，等你逐一开启。</p><div class="album-count"><strong id="unlockedCount">0</strong><span>段回忆已解锁</span></div></div>
         <div class="date-game" aria-label="拼出照片日期">
           <div class="date-entry" role="group" aria-label="日期，格式为月月斜线日日"><button class="date-slot active" data-slot="0" aria-label="月份十位，未填写">_</button><button class="date-slot" data-slot="1" aria-label="月份个位，未填写">_</button><span class="date-slash" aria-hidden="true">/</span><button class="date-slot" data-slot="2" aria-label="日期十位，未填写">_</button><button class="date-slot" data-slot="3" aria-label="日期个位，未填写">_</button></div>
@@ -54,7 +55,7 @@
         </div>
         <div id="unlockedAlbums" class="unlocked-albums" aria-label="已解锁的照片"></div>
       </section>
-      <section id="collage" class="collage-section section-wrap">
+      <section  id="collage" class="collage-section section-wrap">
         <div class="collage-title"><span class="handwritten">Pieces of you</span><h2>关于你的，<br>每一小片。</h2><p>把喜欢的瞬间，<br>拼成一张独一无二的你。</p><p class="draft-note" id="collageNote">左右滑动，或点击左右键翻看。<br>轻触照片，放大看细节。</p></div>
         <div class="collage-board" id="collageBoard" role="region" aria-roledescription="轮播图" aria-label="拼贴照片" tabindex="0">
           <span id="collageHeightLimit" aria-hidden="true"></span>
@@ -62,11 +63,11 @@
           <span id="collageStatus" class="corner-status" role="status" hidden></span><button id="retryCollage" class="text-button" hidden>重试</button><div class="collage-controls"><button id="previousCollage" aria-label="上一张拼贴照片" disabled>←</button><span id="collageCounter" aria-live="polite" aria-atomic="true"></span><button id="nextCollage" aria-label="下一张拼贴照片">→</button></div>
         </div>
         <div class="collage-overview-wrap">
-          <div class="collage-overview-bar"><button id="toggleCollageOverview" class="text-button" aria-expanded="false" aria-controls="collageOverview">查看全部拼贴</button><span id="progressNote">浏览进度保存在当前浏览器</span></div>
+          <div class="collage-overview-bar"><button id="toggleCollageOverview" class="text-button" aria-expanded="false" aria-controls="collageOverview">查看全部 {count} 张</button><span id="progressNote">浏览进度保存在当前浏览器</span></div>
           <div id="collageOverview" hidden><p class="draft-note">按原有编号排列，轻触任意一张放大查看。</p><div id="collageGrid" class="collage-grid" role="group" aria-label="全部拼贴照片，按数字顺序排列"></div></div>
         </div>
       </section>
-      <section id="quiz" class="quiz-section section-wrap">
+      <section  id="quiz" class="quiz-section section-wrap">
         <div class="quiz-intro"><span class="handwritten">How well do you remember?</span><h2>这道题，<br>你一定知道。</h2></div>
         <div class="quiz-paper">
           <div id="quizWelcome" class="quiz-welcome"><div class="quiz-meta"><span>默契小测验</span></div><h3>关于小夏，你了解多少？</h3><p id="quizSummary">准备好了吗？来试试我们的默契。</p><button id="startQuiz" class="primary-button">开始答题 <span aria-hidden="true">↗</span></button></div>

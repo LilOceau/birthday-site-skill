@@ -44,6 +44,12 @@ python serve.py
 
 图片选项使用 `{"label":"海边","src":"assets/quiz/a.png","preview":"assets/quiz/a-small.webp"}`。文件放在 `dist/assets/quiz/`，四个选项按 A–D 顺序填写。可选 `explanationImages` 为包含 `src`、`alt` 的对象数组。图片路径只能引用本地 assets，不能使用外部 URL。完整可运行的数据结构见附带的 content.json。
 
+## 配置主题、栏目与浏览行为
+
+除了基础姓名与文案，site.json 还支持 `theme`（主要配色）、`assets`（开场与信纸素材）、`sections`（栏目与导航）、`behavior`（进度、播放、预加载、动效与提示）、`labels`（页面文案）。所有新增字段均可省略或部分覆盖，旧配置继续使用默认值。
+
+具体字段和默认值见 [配置指南](docs/customization.md)；[site.custom.example.json](site.custom.example.json) 演示暖色主题、隐藏拼贴及只在本次访问中保存进度。将需要的配置组复制到现有 site.json，保留自己的 id 和内容，然后校验、构建、预览。
+
 ## 导入自己的素材
 
 首次导入需要 Python 依赖；建议使用虚拟环境：
@@ -106,6 +112,7 @@ python -m unittest discover -s tests -v
 npm ci
 npx playwright install chromium
 npm run test:browser
+npm run test:configuration
 python export.py release/birthday-site.zip
 ```
 
