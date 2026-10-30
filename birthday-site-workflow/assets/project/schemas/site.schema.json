@@ -655,6 +655,61 @@
         }
       },
       "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "icons": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "favicon": {
+          "default": "assets/branding/favicon.svg",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "fallback": {
+          "default": "assets/branding/favicon-32.png",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "appleTouch": {
+          "default": "assets/branding/apple-touch-icon.png",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
+    },
+    "sharing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "default": "",
+          "type": "string",
+          "pattern": "^(?:|https://(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}/(?:(?!\\.{1,2}/)[A-Za-z0-9._~-]+/)*)(?![\\s\\S])",
+          "maxLength": 2048
+        },
+        "title": {
+          "default": "",
+          "type": "string",
+          "maxLength": 500
+        },
+        "description": {
+          "default": "",
+          "type": "string",
+          "maxLength": 500
+        },
+        "image": {
+          "default": "assets/branding/social-card.png",
+          "type": "string",
+          "pattern": "^assets/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+(?:/(?!\\.{1,2}(?:/|$))[^/\\\\:?#%\\x00-\\x1f]+)*(?![\\s\\S])"
+        },
+        "imageAlt": {
+          "default": "灰蓝色信封、信纸与生日祝福",
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "description": "Optional overrides; omitted fields use the documented defaults."
     }
   },
   "additionalProperties": true,

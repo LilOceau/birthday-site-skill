@@ -2,7 +2,14 @@
 import copy
 from data_validation import ASSET_PATTERN, fail, integer, object_value, string
 
+# Public directory URL, not a single HTML file. Empty keeps an unpublished project local.
+PUBLIC_URL_PATTERN = r'^(?:|https://(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}/(?:(?!\.{1,2}/)[A-Za-z0-9._~-]+/)*)(?![\s\S])'
+
 DEFAULTS = {
+    'icons': {'favicon': 'assets/branding/favicon.svg', 'fallback': 'assets/branding/favicon-32.png',
+              'appleTouch': 'assets/branding/apple-touch-icon.png'},
+    'sharing': {'url': '', 'title': '', 'description': '',
+                'image': 'assets/branding/social-card.png', 'imageAlt': '灰蓝色信封、信纸与生日祝福'},
     'theme': {'background': '#e7eeed', 'ink': '#315f69', 'accent': '#7295a7',
               'paper': '#f4f3ef', 'envelope': '#cbd6dc'},
     'assets': {'background': 'assets/demo/sea.png', 'motif': 'assets/demo/botanical.svg',
@@ -73,8 +80,10 @@ def schema_properties():
                 field['type'] = 'boolean'
             elif group == 'theme':
                 field.update(type='string', pattern=r'^#[0-9a-fA-F]{6}(?![\s\S])')
-            elif group == 'assets' and key != 'motifAlt':
+            elif (group == 'assets' and key != 'motifAlt') or group == 'icons' or (group == 'sharing' and key == 'image'):
                 field.update(type='string', pattern=ASSET_PATTERN.removesuffix('$')+r'(?![\s\S])')
+            elif group == 'sharing' and key == 'url':
+                field.update(type='string', pattern=PUBLIC_URL_PATTERN, maxLength=2048)
             elif key == 'hintAfterAttempts':
                 field.update(type='integer', minimum=0, maximum=10)
             elif key == 'openingMotion':

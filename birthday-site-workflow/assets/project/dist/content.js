@@ -129,8 +129,20 @@ window.BIRTHDAY_CONTENT = {
   "recipient": "小夏",
   "hintYear": 2026,
   "welcomeDate": "06/15",
-  "mediaVersion": "9afbf5315445f6ca",
+  "mediaVersion": "d47d0537edfee4ee",
   "config": {
+    "icons": {
+      "favicon": "assets/branding/favicon.svg",
+      "fallback": "assets/branding/favicon-32.png",
+      "appleTouch": "assets/branding/apple-touch-icon.png"
+    },
+    "sharing": {
+      "url": "",
+      "title": "",
+      "description": "",
+      "image": "assets/branding/social-card.png",
+      "imageAlt": "灰蓝色信封、信纸与生日祝福"
+    },
     "theme": {
       "background": "#e7eeed",
       "ink": "#315f69",

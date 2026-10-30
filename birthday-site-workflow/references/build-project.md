@@ -8,6 +8,8 @@ python <skill目录>/scripts/create_project.py <新目录> --recipient 小夏 --
 
 目录必须不存在；初始化器不会覆盖。它复制完整工程、分配独立进度 ID 并执行构建。进入新目录后执行 `python serve.py`。具体配置、导入、测试、恢复和部署步骤读取工程 [README](../assets/project/README.md)。素材都是可替换的示例，不能描述为用户真实回忆。
 
+面向新手交付时提供工程内 [操作说明.txt](../assets/project/操作说明.txt) 和 [替换教程](../assets/project/docs/replacement-guide.md)。预览无需额外插件；图片导入和品牌图生成的命令优先用 `.\.venv\Scripts\python.exe`，不要求修改 PowerShell 执行策略。分享设置见 [图标与分享预览](../assets/project/docs/sharing.md)。
+
 ## 与已有旧版工程的区别
 
 新工程以 site.json/content.json 为内容来源，build.py 生成 dist/index.html 和 dist/content.js。不要直接修改生成文件后期待下一次构建保留。dist 中其余源码和媒体仍需保留。

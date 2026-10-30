@@ -62,6 +62,8 @@ Schema 能验证结构、类型、长度、日期格式和取值范围；文件�
 
 site.json 还支持可选的 `theme`、`assets`、`sections`、`behavior`、`labels`。完整默认值、部分覆盖、文案占位符和行为边界见 [网站配置指南](customization.md)。新增字段沿用 schemaVersion 1；旧配置省略这些组时保持默认行为。
 
+另有可选 `icons` / `sharing` 配置，见 [图标与分享预览](sharing.md)。它们同样沿用 schemaVersion 1，路径资源在构建前检查，分享网址留空时不输出社交元数据。
+
 ## content.json
 
 `memories`、`collage`、`quiz` 三个数组均必填，允许空数组。顺序有意义：手动编辑按数组顺序呈现；照片导入后，相册按 `MM/DD` 升序，照片按来源编号升序。问答始终保持现有数组顺序。

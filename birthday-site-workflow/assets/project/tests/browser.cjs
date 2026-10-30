@@ -10,7 +10,22 @@ async function check(page,base,label){
   page.on('pageerror',e=>errors.push(e.message));
   page.on('response',r=>{if(r.status()>=400)bad.push(r.status()+' '+r.url());});
   page.on('request',r=>requests.push(r.url()));
-  await page.goto(base);await page.locator('#openEnvelope').click();
+  await page.goto(base);
+  const icon=await page.locator('link[rel="icon"][type="image/png"]').getAttribute('href');
+  const iconResponse=await page.request.get(new URL(icon,base).href);
+  assert.equal(iconResponse.status(),200);const iconBytes=await iconResponse.body();
+  assert.equal(iconBytes.readUInt32BE(16),32);assert.equal(iconBytes.readUInt32BE(20),32);
+  const shareUrl=await page.evaluate(()=>window.BIRTHDAY_CONTENT.config.sharing.url);
+  if(shareUrl){
+    const rawHtml=await (await page.request.get(base)).text();
+    assert(rawHtml.includes('property="og:image"'),'Sharing metadata requires JavaScript');
+    assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'),shareUrl);
+    const shareImage=await page.locator('meta[property="og:image"]').getAttribute('content');
+    assert(shareImage.startsWith(shareUrl+'assets/'),'Social card lost the deployment subdirectory');
+    const shareResponse=await page.request.get(shareImage);assert.equal(shareResponse.status(),200);
+    const shareBytes=await shareResponse.body();assert.equal(shareBytes.readUInt32BE(16),1200);assert.equal(shareBytes.readUInt32BE(20),630);
+  }else assert.equal(await page.locator('meta[property="og:url"]').count(),0);
+  await page.locator('#openEnvelope').click();
   await page.locator('#enterMemories').waitFor({state:'visible',timeout:15000});
   assert(await page.locator('.letter h1 .print-line').evaluate(line=>line.getBoundingClientRect().width<=line.parentElement.getBoundingClientRect().width),'Letter title overflows');
   assert(!requests.some(url=>/original\.(png|jpg|webp)/.test(url)),'Originals loaded before opening a picture');
@@ -67,10 +82,10 @@ async function check(page,base,label){
 }
 (async()=>{
   fs.mkdirSync(path.join(root,'.local'),{recursive:true});
-  const server=spawn(process.env.PYTHON||'python',['serve.py','--port','0'],{cwd:root,stdio:['ignore','pipe','pipe']});
+  const server=process.env.BIRTHDAY_TEST_URL?null:spawn(process.env.PYTHON||'python',['serve.py','--port','0'],{cwd:root,stdio:['ignore','pipe','pipe']});
   let browser;
   try{
-    const base=await new Promise((resolve,reject)=>{
+    const base=process.env.BIRTHDAY_TEST_URL||await new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(new Error('Server startup timeout')),10000);let output='';
       server.on('error',reject);server.stdout.on('data',chunk=>{output+=chunk;const m=output.match(/Preview: (http:\/\/[^\s]+)/);if(m){clearTimeout(timer);resolve(m[1]);}});
     });
@@ -80,5 +95,5 @@ async function check(page,base,label){
       if(label==='blocked-storage')await context.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw new Error('Storage blocked');}}));
       const page=await context.newPage();page.setDefaultTimeout(20000);await check(page,base,label);await context.close();
     }
-  }finally{if(browser)await browser.close();server.kill();}
+  }finally{if(browser)await browser.close();server?.kill();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

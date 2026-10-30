@@ -9,6 +9,7 @@ import re
 import uuid
 from urllib.parse import quote
 from configuration import resolve_options
+from sharing import validate_assets, render_head
 from data_validation import (ASSET_PATTERN, PATH_FIELDS, validate_site,
                              validate_content, validate_import_options)
 
@@ -71,6 +72,7 @@ def valid_date(value):
 def validate(site, content):
     validate_site(site)
     validate_content(content)
+    validate_assets(resolve_options(site), asset)
     for key, value in resolve_options(site)['assets'].items():
         if key != 'motifAlt':
             try:
@@ -144,6 +146,8 @@ def render(site, content):
     multiline={'LABEL_datesTitle','LABEL_collageTitle','LABEL_collageDescription','LABEL_collageHelp','LABEL_quizTitle'}
     def substitute(match):
         key=match[1]
+        if key=='SHARING_HEAD':
+            return render_head(site,config,asset)
         if key not in values:
             raise ValueError('Unknown template placeholder: '+key)
         escaped=html.escape(values[key],quote=True)

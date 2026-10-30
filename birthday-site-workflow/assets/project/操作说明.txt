@@ -1,0 +1,86 @@
+生日网站：Windows 简单操作说明
+
+所有命令都在 PowerShell 执行，不需要 Bash。
+完整图文步骤在 docs\replacement-guide.md，可用编辑器打开；README.md 也有入口。
+在线虚构演示：https://liloceau.github.io/birthday-site-skill/
+
+一、先打开网站
+1. 安装 Python 3.11 或更新版本。打开 PowerShell，输入 python --version 确认。
+2. 在当前工程文件夹打开终端。输入 Get-ChildItem，应能看到 site.json 和 build.py。
+3. 依次输入下面两行：
+   python build.py
+   python serve.py
+4. 浏览器打开 http://127.0.0.1:8765 。不要双击 index.html。
+5. 点击信封，再点击“走进这一年”。示例相册为 06/15 和 08/22。
+6. 要输入其他命令时，先按 Ctrl+C 停止服务。端口占用时用 python serve.py --port 8766。
+
+二、改姓名和文案
+1. 先复制 site.json 留作备份，再用记事本打开：notepad .\site.json
+2. recipient 是姓名，title 是标题，year 是年份，description 是简介。
+3. letterLine / letterDescription 是信纸上的文字；theme 改配色，labels 改按钮与栏目文案。
+4. 保留 id，不要随意改；welcomeDate 必须是已有相册日期，例如 "06/15"，不需要可写 null。
+5. 保存为 UTF-8，文件名仍为 site.json，不能变成 site.json.txt。
+6. JSON 用英文双引号与逗号，最后一项后不能多加逗号，不允许写注释。
+7. 保存后执行：
+   python validate_data.py
+   python build.py
+   看到 PASS 后再继续。报错时按提示检查对应字段。
+
+三、放入自己的照片和拼贴
+首次执行下面两行，建立专用依赖环境，不用激活脚本：
+   python -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+创建输入文件夹：
+   New-Item -ItemType Directory -Force -Path .\materials\my-photos\06.15, .\materials\my-photos\08.22, .\materials\my-collages
+
+用资源管理器复制素材进去，原照片另行保留。示例名字：
+   materials\my-photos\06.15\01-photo.jpg
+   materials\my-photos\06.15\02-photo.jpg
+   materials\my-photos\06.15\03-live.mp4
+   materials\my-photos\08.22\01-photo.jpg
+   materials\my-collages\01-collage.png
+
+每个目录里用 01、02、03 排序，编号不能重复。支持 JPG、PNG、WebP、H.264 MP4。
+HEIC / MOV 需要先另存成受支持格式，不能只改后缀。
+素材放好后执行：
+   .\.venv\Scripts\python.exe import-materials.py --date 06.15 --source .\materials\my-photos
+   .\.venv\Scripts\python.exe import-materials.py --date 08.22 --source .\materials\my-photos
+   .\.venv\Scripts\python.exe import-collages.py --source .\materials\my-collages
+
+每次导入会替换指定日期的整个相册，请放齐当天想展示的素材。其他日期和问答保留。
+示例把 06.15 目录中的 MP4 当作静音 Live；普通视频请阅读 docs\replacement-guide.md 的第三步。
+如有其他日期，创建相应 MM.DD 目录并导入；不需要的示例相册在 content.json 删除，并同步 welcomeDate。
+
+四、改问答
+运行 notepad .\content.json，找到 quiz。
+question 是题目，options 必须有四个选项，answer 的 0/1/2/3 对应第一/二/三/四项。
+answer 写 null 表示开放题、不计分；explanation 是解析。
+不要用单题片段覆盖整个 content.json。复杂图片题格式见 docs\content-model.md。
+改完后再次运行 python validate_data.py 和 python build.py。
+
+五、图标与分享封面
+默认图片在 dist\assets\branding。可按 docs\sharing.md 换成自己的图片。
+也可以根据当前配色与标题重新生成；默认拉丁标题命令：
+   .\.venv\Scripts\python.exe make_branding.py --replace
+中文标题需要支持中文的字体；先确认 C:\Windows\Fonts\msyh.ttc 存在，再运行：
+   .\.venv\Scripts\python.exe make_branding.py --replace --font "C:\Windows\Fonts\msyh.ttc" --subtitle "把值得记住的日子，慢慢翻给你看。"
+--replace 会先备份旧图，再生成四个文件。更换配色或标题不会自动重画旧封面。
+分享网址填写在 site.json 的 sharing.url；还未上线时保持空字符串。
+获得自己正式 HTTPS 网址后再填写，末尾必须有 /，不要填作者演示的网址。
+然后执行 python build.py，再上传。不同聊天平台可能缓存或不显示预览。
+
+六、检查与打包
+   python validate_data.py
+   python build.py --check
+   python serve.py
+检查姓名、日期、照片、视频、拼贴和答案；确认后 Ctrl+C 停止服务，再输入：
+   python export.py .\release\birthday-site.zip
+包已存在时换一个新文件名，不覆盖历史包。
+上传 ZIP 解压后的网页文件，或按平台要求上传 dist。不要上传整个工程、原始素材和备份。
+关闭栏目只是隐藏显示，不会删除内容；旧照片仍可能留在 dist，发布前须检查。
+
+七、不要误删
+dist 里面有必须保留的源码和媒体，不是普通缓存。原始照片、配置、manifests 和需要的 .backups 都应保留。
+改坏时先保留当前状态，再从同一次 .backups 的副本恢复对应文件，最后 python build.py。
+这是独立网站工程，不需要额外网站插件。公开演示仅含虚构数据，你自己的照片是否公开需自行决定。

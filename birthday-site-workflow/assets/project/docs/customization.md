@@ -174,3 +174,7 @@ npm run test:configuration
 配置测试在临时工程中验证自定义配色 / 素材 / 文案、栏目组合、静态开场、提示阈值、关闭存储、关闭预加载及手动 Live；不会把测试配置写回工作工程。输出截图保存在 `.local/`。
 
 维护者在 configuration.py 修改默认值或配置约束后，运行 `python sync_config_schema.py` 更新 site.schema.json，并同步默认示例与本文。CI 会检查 Schema 与配置定义是否一致。运行时 config 由构建器生成；不要在 content.json 顶层用 `config`、`siteId`、`recipient`、`hintYear`、`welcomeDate` 或 `mediaVersion` 保存自定义数据，这些名称会被生成值覆盖。
+
+## 图标与分享配置
+
+v0.4.0 增加 `icons` 和 `sharing` 两个可选组，字段、默认值、图片生成与正式网址规则见 [图标与分享预览](sharing.md)。旧版配置无需添加这两组；升级工程时应同时保留新版模板附带的 branding 资源。

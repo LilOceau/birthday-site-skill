@@ -1,0 +1,33 @@
+生日网站 Skill：下载后从这里开始（Windows PowerShell）
+
+1. 在线看看虚构示例：
+   https://liloceau.github.io/birthday-site-skill/
+   点信封进入，日期 06/15 和 08/22 有示例相册。所有插画与短片都是虚构素材。
+
+2. 安装 Python 3.11 或更新版本；打开 PowerShell，输入 python --version 确认。
+
+3. 在本解压文件夹中打开终端，应能看到 README.md 和 birthday-site-workflow 文件夹。
+   依次输入：
+   python .\birthday-site-workflow\scripts\create_project.py ..\my-birthday-site --recipient "小夏" --title "A day for you"
+   Set-Location ..\my-birthday-site
+   python serve.py
+
+4. 浏览器打开 http://127.0.0.1:8765 。停止服务按 Ctrl+C。
+   如果目标文件夹已存在，换一个新名字，不要先删除旧项目。
+   如果电脑只识别 py，可把上述 python 换成 py。
+
+5. 新生成的 my-birthday-site 文件夹内还有一份“操作说明.txt”。
+   它按顺序介绍改姓名、放照片、改问答、做分享封面、预览和打包。
+   完整替换教程在 docs\replacement-guide.md；新手不需要读程序代码。
+
+6. 所有以上命令均为 PowerShell 可用命令，无需 Bash、Git 或 Node。
+   只预览不需要安装额外包；导入照片时再按工程内说明安装依赖。
+
+维护者补充：
+- scripts\build_demo.py 只从仓库内置虚构模板制作在线演示。
+- 本地生成演示的 PowerShell 命令（输出目录必须不存在）：
+  python .\scripts\build_demo.py --output .\.local\demo-preview --url "https://liloceau.github.io/birthday-site-skill/"
+- 正式演示由 GitHub Actions 的 Publish fictional demo 手动运行，全部验证通过后发布。
+- 修改自己的私人网站请操作初始化后的新工程；不要把私人照片提交到这个公开 Skill 仓库。
+
+源码和教程：https://github.com/LilOceau/birthday-site-skill

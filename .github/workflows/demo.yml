@@ -1,0 +1,44 @@
+name: Publish fictional demo
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: github-pages-demo
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.repository == 'LilOceau/birthday-site-skill' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/validate.yml
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/configure-pages@v5
+        id: pages
+      - name: Build only the bundled fictional template
+        env:
+          DEMO_URL: ${{ steps.pages.outputs.base_url }}/
+        run: python scripts/build_demo.py --output .local/pages --url $env:DEMO_URL
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .local/pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

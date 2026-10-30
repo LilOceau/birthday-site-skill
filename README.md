@@ -4,11 +4,19 @@
 
 信封开场 → 日期解锁相册 → Live 与视频 → 编号拼贴 → 图片问答。保留灰蓝信笺风格、手机适配、原图按需加载和浏览器进度。
 
+## 在线演示与新手入口
+
+**[打开在线演示](https://liloceau.github.io/birthday-site-skill/)** · [Windows 替换教程](birthday-site-workflow/assets/project/docs/replacement-guide.md) · [操作说明 TXT](操作说明.txt)
+
+在线演示仅使用虚构人物、原创几何插画与程序生成短片。点击信封进入，迎宾相册是 06/15，输入 0822 可解锁第二组。演示与私人生日网站独立，复制工程不会自动填入作者的网址或发布内容。
+
+![默认图标与分享卡片](birthday-site-workflow/assets/project/dist/assets/branding/social-card.png)
+
 ## 五分钟开始
 
-先安装 Python 3.11+。在 PowerShell、macOS 或 Linux 终端运行：
+先安装 Python 3.11+。以下为 Windows PowerShell 可用命令（如已安装 Git）：
 
-```text
+```powershell
 git clone https://github.com/LilOceau/birthday-site-skill.git
 cd birthday-site-skill
 python birthday-site-workflow/scripts/create_project.py ../my-birthday-site --recipient 小夏 --title "A day for you"
@@ -36,13 +44,15 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 
 安装器只需安装 skill 子目录，完整工程已包含在里面。有旧版本时先保留本地修改，再更新整个目录。已有私人站点继续走维护流程，不要用模板覆盖旧工程。
 
-## 版本 0.3.0 包含什么
+## 版本 0.4.0 包含什么
 
 | 能力 | 实现与入口 |
 | --- | --- |
 | 创建独立工程 | scripts/create_project.py；新目录保护、独立浏览进度 ID |
 | 内容配置 | 三份 JSON Schema、数据格式规范 v1、只读校验；build.py 生成网页内容 |
 | 网站配置 | 配色、装饰素材、栏目开关、页面文案、进度保存、Live 自动播放与日期提示 |
+| 图标与分享 | SVG / PNG 图标、Apple 图标、1200×630 分享卡片、静态 Open Graph / Twitter 元数据 |
+| 在线演示与教程 | GitHub Pages 虚构演示、Windows 替换流程、仓库与独立工程 TXT 操作说明 |
 | 完整前端 | 信封动画、日期相册、Live/普通视频、缩放、拼贴翻页与总览、图片问答 |
 | 媒体导入 | 按日期增量导入、编号校验、原件哈希、H.264 视频流保留、备份与清单 |
 | 本地预览 | Python 标准库服务，支持视频 Range 请求 |
@@ -63,6 +73,12 @@ $birthday-site-workflow 在新目录创建一个生日网站，收件人为小�
 在 site.json 调整 `theme`、`assets`、`sections`、`behavior`、`labels`，即可更换主要配色、背景与装饰素材、选择栏目、修改常用文案及浏览行为。每组都支持部分覆盖，旧配置继续使用默认值。
 
 见 [配置指南](birthday-site-workflow/assets/project/docs/customization.md) 和 [暖色主题示例](birthday-site-workflow/assets/project/site.custom.example.json)。栏目关闭不会删除数据，关闭进度保存不会读取或删除浏览器旧记录；系统减少动态效果偏好仍被尊重。
+
+## 图标与分享预览
+
+`icons` 配置浏览器和 Apple 图标，`sharing` 配置正式网址、标题、摘要和封面。没有正式网址时 url 留空；填写自己的 HTTPS 目录网址后运行构建，HTML 会包含无需 JavaScript 的分享元数据。图片链接包含内容哈希，支持 GitHub Pages 子目录。详见 [图标与分享指南](birthday-site-workflow/assets/project/docs/sharing.md)。
+
+默认图标和封面可直接使用；需要重新生成时运行 `make_branding.py`，中文文本指定本机字体。构建和预览仍不需要新增依赖。
 
 ## 替换自己的内容
 
@@ -109,6 +125,8 @@ npm run test:browser
 npm run test:configuration
 python export.py release/birthday-site.zip
 ```
+
+浏览器测试也核对图标与已配置的分享元数据。在线演示由 [Publish fictional demo](.github/workflows/demo.yml) 手动触发，完整验证通过后才上传内置模板的 dist。
 
 浏览器测试覆盖开场、相册、缩放、Live/视频呈现、拼贴、图片问答和进度恢复；手机尺寸模拟不能替代真实 Safari/iPhone 验收。仓库提供 [CI 流程](.github/workflows/validate.yml)，在干净 Linux 环境初始化后执行同样的检查。
 

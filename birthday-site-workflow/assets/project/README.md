@@ -2,6 +2,8 @@
 
 一个无前端框架、无需打包器的静态网站。包含信封开场、日期相册、Live / 普通视频、拼贴、图片问答和本地进度。示例人物“小夏”、日期与素材均为虚构，几何插画与短片由程序生成。
 
+新手先看 [Windows 替换教程](docs/replacement-guide.md) 或用记事本打开 [操作说明.txt](操作说明.txt)。[在线虚构演示](https://liloceau.github.io/birthday-site-skill/) 可直接体验完整流程。
+
 ## 先运行
 
 需要 Python 3.11+。在本目录执行：
@@ -50,6 +52,12 @@ python serve.py
 
 具体字段和默认值见 [配置指南](docs/customization.md)；[site.custom.example.json](site.custom.example.json) 演示暖色主题、隐藏拼贴及只在本次访问中保存进度。将需要的配置组复制到现有 site.json，保留自己的 id 和内容，然后校验、构建、预览。
 
+## 图标与分享
+
+附带 SVG 图标、32×32 PNG、180×180 Apple 图标和 1200×630 分享封面。site.json 的 `icons` 与 `sharing` 支持部分覆盖；sharing.url 默认为空，填自己的正式 HTTPS 目录地址后构建才会输出 canonical、Open Graph 与 Twitter 标签。路径会保留部署子目录，素材带内容哈希。详见 [图标与分享预览](docs/sharing.md)。
+
+`make_branding.py` 可用当前配色和标题生成图标与封面，需要 requirements.txt 中的 Pillow；中文需指定支持中文的字体。运行前阅读上述指南或操作说明.txt，`--replace` 会先保留旧文件备份。
+
 ## 导入自己的素材
 
 首次导入需要 Python 依赖；建议使用虚拟环境：
@@ -58,7 +66,7 @@ python serve.py
 python -m venv .venv
 ```
 
-Windows PowerShell 使用 `.venv\Scripts\Activate.ps1`；macOS / Linux 使用 `source .venv/bin/activate`。若 PowerShell 禁止激活脚本，可直接用 `.venv\Scripts\python.exe` 替换以下命令中的 python。
+Windows PowerShell 可使用 `.venv\Scripts\Activate.ps1`；macOS / Linux 的 Bash 激活命令为 `source .venv/bin/activate`（仅 Bash，不可直接在 PowerShell 执行）。若 PowerShell 禁止激活脚本，可直接用 `.venv\Scripts\python.exe` 替换以下命令中的 python。
 
 ```text
 python -m pip install -r requirements.txt
@@ -122,7 +130,7 @@ export.py 拒绝过期构建和已有输出路径，只打包 dist 内容。它�
 
 ## 部署
 
-这是静态站，可将 ZIP 解压后的文件上传到任意支持静态文件的托管。根目录已提供 netlify.toml（发布目录 dist）。Netlify 手动上传选择 dist；使用 Git 集成时，提交最新生成文件并将发布目录设为 dist，不需要 Node 构建命令。其他托管服务也应把网站放在所选站点的根目录。
+这是静态站，可将 ZIP 解压后的文件上传到任意支持静态文件的托管。根目录已提供 netlify.toml（发布目录 dist）。Netlify 手动上传选择 dist；使用 Git 集成时，提交最新生成文件并将发布目录设为 dist，不需要 Node 构建命令。GitHub Pages 等子目录部署也可使用相对路径；sharing.url 必须包含实际目录并以斜杠结尾。
 
 若已安装并登录 Netlify CLI，可先创建预览部署，检查后再发布同一份内容；将 YOUR_SITE_ID 替换为你自己的站点 ID：
 
